@@ -5,14 +5,20 @@ import (
 	"testing"
 )
 
-func TestDescribe(t *testing.T){
-	Describe(t,"We have strings", func() {
-		var lcs = NewLCS("acccagcagttaga","atatgcgggatgcg") //stringのGoにおける実装上、半角英数でなければならない。
-		Context("and we calculate LCS",func() {
+func TestDescribe2(t *testing.T){
+	Describe(t,"We have the other strings", func() {
+		var lcs = NewNW("gctagg","aattgaagg") //stringのGoにおける実装上、半角英数でなければならない。
+		Context("and we calculate NW",func() {
 			lcs.Length()
-			It("should be the correct string",func() {
-				var s string =	lcs.Print(lcs.b,lcs.x,len(lcs.x),len(lcs.y))
-				Expect(s).To(Equal,"aagcgga")
+			var p,q,r =lcs.Print(lcs.b,lcs.x,lcs.y,len(lcs.x),len(lcs.y))
+			It("should be the correct string of 1st line",func() {
+				Expect(p).To(Equal,"aattgaagg")
+			})
+			It("should be the correct string of 2nd line",func() {
+				Expect(q).To(Equal,"  !  ! !!")
+			})
+			It("should be the correct string of 3rd line",func() {
+				Expect(r).To(Equal,"gct--a-gg")
 			})
 		})
 	})
