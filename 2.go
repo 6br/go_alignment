@@ -1,7 +1,10 @@
 package main
 //package LCS
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+)
 
 type LCS struct {
 	x string
@@ -67,8 +70,17 @@ func (l LCS) Print(b [][]string,x string,i int,j int) string {
 	return p
 }
 
+func Benchmark(b *testing.B){
+var lcs = NewLCS("jkahkncjknewrkfiljsklhlsfhskujejjflwjklnvmxcnvlcsdjfjjsdljdslfjsljfhedjwljkshfuejcklsjs","* klvnwoihwoihtewkllnxcnvsmvmjsdnjkjnshuvhsuiujeijwiodkakcopjnsdvsvbfsfvxjhsduifjkshskfrf")
+	lcs.Length()
+/*	fmt.Println(lcs.b)
+	fmt.Println(lcs.c)*/
+	fmt.Println(lcs.Print(lcs.b,lcs.x,len(lcs.x),len(lcs.y)))
+}
+
 func main() {
-	var lcs = NewLCS("attataatgtgct","ggattgtac") //stringのGoにおける実装上、半角英数でなければならない。
+	//var lcs = NewLCS("attataatgtgct","ggattgtac") //stringのGoにおける実装上、半角英数でなければならない。
+var lcs = NewLCS("jkahkncjknewrkfiljsklhlsfhskujejjflwjklnvmxcnvlcsdjfjjsdljdslfjsljfhedjwljkshfuejcklsjs","* klvnwoihwoihtewkllnxcnvsmvmjsdnjkjnshuvhsuiujeijwiodkakcopjnsdvsvbfsfvxjhsduifjkshskfrf")
 	lcs.Length()
 /*	fmt.Println(lcs.b)
 	fmt.Println(lcs.c)*/

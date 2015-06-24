@@ -12,9 +12,17 @@ def subsequence a
   result
 end
 
-x = gets.chomp.split("")
-y = gets.chomp
-Benchmark.bm 10 do |r|
+#x = gets.chomp.split("")
+#y = gets.chomp
+xall = 'jkahkncjknewrkfiljsklhlsfhskujejjflwjklnvmxcnvlcsdjfjjsdljdslfjsljfhedjwljkshfuejcklsjs'
+yall = 'klvnwoihwoihtewkllnxcnvsmvmjsdnjkjnshuvhsuiujeijwiodkakcopjnsdvsvbfsfvxjhsduifjkshskfrf'
+
+last = 20
+
+x = xall[0..last].split("")
+y = yall[0..last]
+
+Benchmark.bm 1 do |r|
 	r.report "subs" do
 		p (subsequence x).select {|s| y.include?(s.join)}.map{|s| s.join}
 	end
