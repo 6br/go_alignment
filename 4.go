@@ -2,17 +2,17 @@ package main
 
 import "fmt"
 
-const mu = 1
-const s = 2
+const myu = 1
+const sgm = 2
 
-type LCS struct {
+type SW struct {
 	x string
 	y string
 	c [][]int
 	b [][]string
 }
 
-func NewLCS(y string,x string) *LCS {
+func NewSW(y string,x string) *SW {
 	xlen := len(x)+1
 	ylen := len(y)+1
 	c := make([][]int,xlen,xlen)
@@ -21,11 +21,11 @@ func NewLCS(y string,x string) *LCS {
 		c[y] = make([]int,ylen,ylen)
 		b[y] = make([]string,ylen)
 	}
-	LCS := &LCS{x:x,y:y,c:c,b:b}
-	return LCS
+	SW := &SW{x:x,y:y,c:c,b:b}
+	return SW
 }
 
-func (l LCS) Length() {
+func (l SW) Length() {
 	var m = len(l.x)+1
 	var n = len(l.y)+1
 	for i:=1; i<m ;i++{
@@ -41,15 +41,15 @@ func (l LCS) Length() {
 				l.c[i][j] = l.c[i-1][j-1]+1
 				l.b[i][j] = "!"
 			} else {
-				l.c[i][j] = l.c[i-1][j-1]-mu
+				l.c[i][j] = l.c[i-1][j-1]-myu
 				l.b[i][j] = " "
 			}
 			if l.c[i-1][j]-s>=l.c[i][j] {
-				l.c[i][j] = l.c[i-1][j]-s
+				l.c[i][j] = l.c[i-1][j]-sgm
 				l.b[i][j] = "|"
 			}
 			if l.c[i][j-1]-s>=l.c[i][j] {
-				l.c[i][j] = l.c[i][j-1]-s
+				l.c[i][j] = l.c[i][j-1]-sgm
 				l.b[i][j] = "-"
 			}
 			if 0>=l.c[i][j] {
@@ -60,7 +60,7 @@ func (l LCS) Length() {
 	}
 }
 
-func (l LCS) Print(b [][]string,x string,y string,i int,j int) (string,string,string) {
+func (l SW) Print(b [][]string,x string,y string,i int,j int) (string,string,string) {
 	var p,q,r string
 	if i==0 || j==0 || b[i][j]=="aborted" {
 		return "","",""
@@ -86,9 +86,9 @@ func (l LCS) Print(b [][]string,x string,y string,i int,j int) (string,string,st
 	//fmt.Println(rt)
 	return p,q,r
 }
-
+/*
 func main() {
-	var lcs = NewLCS("gctagg","aattgaagg") //stringのGoにおける実装上、半角英数でなければならない。
+	var lcs = NewSW("gctagg","aattgaagg") //stringのGoにおける実装上、半角英数でなければならない。
 	lcs.Length()
 	fmt.Println(lcs.b)
 	fmt.Println(lcs.c)
@@ -97,5 +97,5 @@ func main() {
 fmt.Println(q)
 fmt.Println(r)
 }
-
+*/
 

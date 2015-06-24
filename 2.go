@@ -1,4 +1,5 @@
 package main
+//package LCS
 
 import "fmt"
 
@@ -48,27 +49,30 @@ func (l LCS) Length() {
 	}
 }
 
-func (l LCS) Print(b [][]string,x string,i int,j int,rt string) {
+func (l LCS) Print(b [][]string,x string,i int,j int) string {
 	if i==0 || j==0 {
-		return
+		return ""
 	}
+	var p string;
 	if b[i][j] == "\\" {
 	//	fmt.Printf("%c",x[i-1])
-		l.Print(b,x,i-1,j-1,rt)
-		fmt.Printf("%c",x[i-1])
+		p=l.Print(b,x,i-1,j-1)
+		//fmt.Printf("%c",x[i-1])
+		p += fmt.Sprintf("%c",x[i-1])
 	} else if b[i][j] == "|" {
-	    l.Print(b,x,i-1,j,rt)
+	    p=l.Print(b,x,i-1,j)
 	} else {
-		l.Print(b,x,i,j-1,rt)
+		p=l.Print(b,x,i,j-1)
 	}
+	return p
 }
 
 func main() {
-	var lcs = NewLCS("acccagcagttaga","atatgcgggatgcg") //stringのGoにおける実装上、半角英数でなければならない。
+	var lcs = NewLCS("attataatgtgct","ggattgtac") //stringのGoにおける実装上、半角英数でなければならない。
 	lcs.Length()
-	fmt.Println(lcs.b)
-	fmt.Println(lcs.c)
-	lcs.Print(lcs.b,lcs.x,len(lcs.x),len(lcs.y),"")
+/*	fmt.Println(lcs.b)
+	fmt.Println(lcs.c)*/
+	fmt.Println(lcs.Print(lcs.b,lcs.x,len(lcs.x),len(lcs.y)))
 }
 
 

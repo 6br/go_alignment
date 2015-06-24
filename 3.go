@@ -5,14 +5,14 @@ import "fmt"
 const mu = 1
 const s = 2
 
-type LCS struct {
+type NW struct {
 	x string
 	y string
 	c [][]int
 	b [][]string
 }
 
-func NewLCS(y string,x string) *LCS {
+func NewNW(y string,x string) *NW {
 	xlen := len(x)+1
 	ylen := len(y)+1
 	c := make([][]int,xlen,xlen)
@@ -21,11 +21,11 @@ func NewLCS(y string,x string) *LCS {
 		c[y] = make([]int,ylen,ylen)
 		b[y] = make([]string,ylen)
 	}
-	LCS := &LCS{x:x,y:y,c:c,b:b}
-	return LCS
+	NW := &NW{x:x,y:y,c:c,b:b}
+	return NW
 }
 
-func (l LCS) Length() {
+func (l NW) Length() {
 	var m = len(l.x)+1
 	var n = len(l.y)+1
 	for i:=1; i<m ;i++{
@@ -56,7 +56,7 @@ func (l LCS) Length() {
 	}
 }
 
-func (l LCS) Print(b [][]string,x string,y string,i int,j int) (string,string,string) {
+func (l NW) Print(b [][]string,x string,y string,i int,j int) (string,string,string) {
 	var p,q,r string
 	if i==0 || j==0 {
 		return "","",""
@@ -82,9 +82,9 @@ func (l LCS) Print(b [][]string,x string,y string,i int,j int) (string,string,st
 	//fmt.Println(rt)
 	return p,q,r
 }
-
+/*
 func main() {
-	var lcs = NewLCS("gctagg","aattgaagg") //stringのGoにおける実装上、半角英数でなければならない。
+	var lcs = NewNW("gctagg","aattgaagg") //stringのGoにおける実装上、半角英数でなければならない。
 	lcs.Length()
 	fmt.Println(lcs.b)
 	fmt.Println(lcs.c)
@@ -93,5 +93,5 @@ func main() {
 fmt.Println(q)
 fmt.Println(r)
 }
-
+*/
 
