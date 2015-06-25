@@ -38,12 +38,13 @@ func main() {
 	flag.Parse()
 	var ary string
 	var ary2 string
-	if flag.Arg(1)!=""{
+	fmt.Println(flag.Arg(1))
+	if flag.Arg(1)==""{
 		ary = readfile("sequence.fasta")
 		ary2 = readfile("sequence2.fasta")
 	} else {
-		
-		
+		ary = flag.Arg(1)
+		ary2 = flag.Arg(2)
 	}
 
 	var lcs DPMatrix
