@@ -24,6 +24,9 @@ func NewSW(y string,x string) *SW {
 	SW := &SW{x:x,y:y,c:c,b:b}
 	return SW
 }
+func (l SW) Strlen() (int,int){
+	return len(l.x),len(l.y)
+}
 
 func (l SW) Length() {
 	var m = len(l.x)+1
@@ -44,11 +47,11 @@ func (l SW) Length() {
 				l.c[i][j] = l.c[i-1][j-1]-myu
 				l.b[i][j] = " "
 			}
-			if l.c[i-1][j]-s>=l.c[i][j] {
+			if l.c[i-1][j]-sgm>=l.c[i][j] {
 				l.c[i][j] = l.c[i-1][j]-sgm
 				l.b[i][j] = "|"
 			}
-			if l.c[i][j-1]-s>=l.c[i][j] {
+			if l.c[i][j-1]-sgm>=l.c[i][j] {
 				l.c[i][j] = l.c[i][j-1]-sgm
 				l.b[i][j] = "-"
 			}
@@ -60,42 +63,43 @@ func (l SW) Length() {
 	}
 }
 
-func (l SW) Print(b [][]string,x string,y string,i int,j int) (string,string,string) {
+func (l SW) Print(i int,j int) (string,string,string) {
 	var p,q,r string
-	if i==0 || j==0 || b[i][j]=="aborted" {
+	if i==0 || j==0 || l.b[i][j]=="aborted" {
 		return "","",""
 	}
-	if b[i][j] == " " || b[i][j]=="!" {
-		p,q,r = l.Print(b,x,y,i-1,j-1)
+	if l.b[i][j] == " " || l.b[i][j]=="!" {
+		p,q,r = l.Print(i-1,j-1)
 		//fmt.Printf("%c",x[i-1])
-		p += fmt.Sprintf("%c",x[i-1])
-		q += b[i][j]
-		r += fmt.Sprintf("%c",y[j-1])
-	} else if b[i][j] == "|" {
-	    	p,q,r =l.Print(b,x,y,i-1,j)
-		p += fmt.Sprintf("%c",x[i-1])
+		p += fmt.Sprintf("%c",l.x[i-1])
+		q += l.b[i][j]
+		r += fmt.Sprintf("%c",l.y[j-1])
+	} else if l.b[i][j] == "|" {
+	    p,q,r =l.Print(i-1,j)
+		p += fmt.Sprintf("%c",l.x[i-1])
 		q += " "
 		r += "-"
 
 	} else {
-		p,q,r =l.Print(b,x,y,i,j-1)
+		p,q,r =l.Print(i,j-1)
 		p += "-"
 		q += " "
-		r += fmt.Sprintf("%c",y[j-1])
+		r += fmt.Sprintf("%c",l.y[j-1])
 	}
 	//fmt.Println(rt)
 	return p,q,r
 }
 /*
 func main() {
-	var lcs = NewSW("gctagg","aattgaagg") //stringのGoにおける実装上、半角英数でなければならない。
+	var lcs = NewSW("gctaggaa","aattgaag") //stringのGoにおける実装上、半角英数でなければならない。
 	lcs.Length()
 	fmt.Println(lcs.b)
 	fmt.Println(lcs.c)
-	var p,q,r =lcs.Print(lcs.b,lcs.x,lcs.y,len(lcs.x),len(lcs.y))
+	var lx,ly = lcs.Strlen()
+	var p,q,r =lcs.Print(lx,ly)
 	fmt.Println(p)
-fmt.Println(q)
-fmt.Println(r)
+	fmt.Println(q)
+	fmt.Println(r)
 }
 */
 

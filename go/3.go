@@ -60,28 +60,28 @@ func (l NW) Strlen() (int,int){
 	return len(l.x),len(l.y)
 }
 
-func (l NW) Print(b [][]string,x string,y string,i int,j int) (string,string,string) {
+func (l NW) Print(i int,j int) (string,string,string) {
 	var p,q,r string
 	if i==0 || j==0 {
 		return "","",""
 	}
-	if b[i][j] == " " || b[i][j]=="!" {
-		p,q,r = l.Print(b,x,y,i-1,j-1)
+	if l.b[i][j] == " " || l.b[i][j]=="!" {
+		p,q,r = l.Print(i-1,j-1)
 		//fmt.Printf("%c",x[i-1])
-		p += fmt.Sprintf("%c",x[i-1])
-		q += b[i][j]
-		r += fmt.Sprintf("%c",y[j-1])
-	} else if b[i][j] == "|" {
-	    	p,q,r =l.Print(b,x,y,i-1,j)
-		p += fmt.Sprintf("%c",x[i-1])
+		p += fmt.Sprintf("%c",l.x[i-1])
+		q += l.b[i][j]
+		r += fmt.Sprintf("%c",l.y[j-1])
+	} else if l.b[i][j] == "|" {
+	    p,q,r =l.Print(i-1,j)
+		p += fmt.Sprintf("%c",l.x[i-1])
 		q += " "
 		r += "-"
 
 	} else {
-		p,q,r =l.Print(b,x,y,i,j-1)
+		p,q,r =l.Print(i,j-1)
 		p += "-"
 		q += " "
-		r += fmt.Sprintf("%c",y[j-1])
+		r += fmt.Sprintf("%c",l.y[j-1])
 	}
 	//fmt.Println(rt)
 	return p,q,r

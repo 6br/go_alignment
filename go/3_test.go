@@ -11,7 +11,7 @@ func TestDescribe2(t *testing.T){
 		Context("and we calculate NW",func() {
 			lcs.Length()
 			var lx,ly = lcs.Strlen() 
-			var p,q,r =lcs.Print(lcs.b,lcs.x,lcs.y,lx,ly)
+			var p,q,r =lcs.Print(lx,ly)
 			It("should be the correct string of 1st line",func() {
 				Expect(p).To(Equal,"aattgaagg")
 			})
