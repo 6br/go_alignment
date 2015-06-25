@@ -6,7 +6,7 @@ import (
 	"io"
 	"bufio"
 	"flag"
-	. "./go"
+	. "./src"
 )
 
 func readfile(i string) string {
@@ -36,8 +36,15 @@ func readfile(i string) string {
 
 func main() {
 	flag.Parse()
-	var ary string = readfile("sequence.fasta")
-	var ary2 string = readfile("sequence2.fasta")
+	var ary string
+	var ary2 string
+	if flag.Arg(1)!=""{
+		ary = readfile("sequence.fasta")
+		ary2 = readfile("sequence2.fasta")
+	} else {
+		
+		
+	}
 
 	var lcs DPMatrix
 	switch flag.Arg(0) {
