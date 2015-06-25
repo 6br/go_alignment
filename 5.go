@@ -23,15 +23,29 @@ func main() {
     sc.Split(bufio.ScanWords)
     m := nextInt()
     n := nextInt()
-		p := make([]int,0)
 		q := make([]int,0)
+		r := make([]int,0)
+		sum_q := 0
+		sum_r := 0
     for i := 0; i < n; i++ {
-        p = append(p,nextInt())
         q = append(q,nextInt())
+				sum_q += q[len(q)-1]
+        r = append(r,nextInt())
+				sum_r += r[len(r)-1]
     }
     //fmt.Println(m,p,q)
 
 		//calculate
-
+		dp_m := sum_q - m
+		dp := make([]int,dp_m)
+		for i:=0; i<len(q) ;i++ {
+			r_tmp := r[i]
+			q_tmp := q[i]
+			for j:=dp_m; j>= q_tmp; j-- {
+				if dp[j]>dp[j-q_tmp]-r_tmp{
+				dp[j] = dp[j-q_tmp]-r_tmp}
+			}
+		}
+		fmt.Println(sum_r - dp[dp_m])
 }
 
