@@ -1,4 +1,4 @@
-package main
+package alignment
 
 import "fmt"
 
@@ -54,6 +54,10 @@ func (l NW) Length() {
 			}
 		}
 	}
+}
+
+func (l NW) Strlen() (int,int){
+	return len(l.x),len(l.y)
 }
 
 func (l NW) Print(b [][]string,x string,y string,i int,j int) (string,string,string) {

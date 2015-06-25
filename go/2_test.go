@@ -1,4 +1,4 @@
-package main
+package alignment
 
 import (
 	. "github.com/r7kamura/gospel"
@@ -7,11 +7,12 @@ import (
 
 func TestDescribe(t *testing.T){
 	Describe(t,"We have strings", func() {
-		var lcs = NewLCS("acccagcagttaga","atatgcgggatgcg") //stringのGoにおける実装上、半角英数でなければならない。
+		var lcs DPMatrix = NewLCS("acccagcagttaga","atatgcgggatgcg") //stringのGoにおける実装上、半角英数でなければならない。
 		Context("and we calculate LCS",func() {
 			lcs.Length()
 			It("should be the correct string",func() {
-				var s string =	lcs.Print(lcs.b,lcs.x,len(lcs.x),len(lcs.y))
+				var lx,ly = lcs.Strlen() 
+				var s,_,_ string =	lcs.Print(lx,ly)
 				Expect(s).To(Equal,"aagcgga")
 			})
 		})

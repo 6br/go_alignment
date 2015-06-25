@@ -1,5 +1,4 @@
-package main
-//package LCS
+package alignment
 
 import (
 	"fmt"
@@ -52,22 +51,26 @@ func (l LCS) Length() {
 	}
 }
 
-func (l LCS) Print(b [][]string,x string,i int,j int) string {
+func (l LCS) Strlen() (int,int){
+	return len(l.x),len(l.y)
+}
+
+func (l LCS) Print(i int,j int) (string,string,string) {
 	if i==0 || j==0 {
-		return ""
+		return "","",""
 	}
 	var p string;
-	if b[i][j] == "\\" {
+	if l.b[i][j] == "\\" {
 	//	fmt.Printf("%c",x[i-1])
-		p=l.Print(b,x,i-1,j-1)
+		p,_,_=l.Print(i-1,j-1)
 		//fmt.Printf("%c",x[i-1])
-		p += fmt.Sprintf("%c",x[i-1])
-	} else if b[i][j] == "|" {
-	    p=l.Print(b,x,i-1,j)
+		p += fmt.Sprintf("%c",l.x[i-1])
+	} else if l.b[i][j] == "|" {
+	    p,_,_=l.Print(i-1,j)
 	} else {
-		p=l.Print(b,x,i,j-1)
+		p,_,_=l.Print(i,j-1)
 	}
-	return p
+	return p,"",""
 }
 
 func Benchmark(b *testing.B){
@@ -75,16 +78,16 @@ var lcs = NewLCS("jkahkncjknewrkfiljsklhlsfhskujejjflwjklnvmxcnvlcsdjfjjsdljdslf
 	lcs.Length()
 /*	fmt.Println(lcs.b)
 	fmt.Println(lcs.c)*/
-	fmt.Println(lcs.Print(lcs.b,lcs.x,len(lcs.x),len(lcs.y)))
+	fmt.Println(lcs.Print(len(lcs.x),len(lcs.y)))
 }
-
+/*
 func main() {
-	//var lcs = NewLCS("attataatgtgct","ggattgtac") //stringのGoにおける実装上、半角英数でなければならない。
-var lcs = NewLCS("jkahkncjknewrkfiljsklhlsfhskujejjflwjklnvmxcnvlcsdjfjjsdljdslfjsljfhedjwljkshfuejcklsjs","* klvnwoihwoihtewkllnxcnvsmvmjsdnjkjnshuvhsuiujeijwiodkakcopjnsdvsvbfsfvxjhsduifjkshskfrf")
+	var lcs DPMatrix = NewLCS("attataatgtgct","ggattgtac") //stringのGoにおける実装上、半角英数でなければならない。
 	lcs.Length()
-/*	fmt.Println(lcs.b)
-	fmt.Println(lcs.c)*/
-	fmt.Println(lcs.Print(lcs.b,lcs.x,len(lcs.x),len(lcs.y)))
-}
+//	fmt.Println(lcs.b)
+//	fmt.Println(lcs.c)
+	var lx,ly = lcs.Strlen() 
+	fmt.Println(lcs.Print(lx,ly))
+}*/
 
 
