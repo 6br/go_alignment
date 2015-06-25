@@ -1,4 +1,5 @@
 package alignment
+//package main
 
 import "fmt"
 
@@ -10,6 +11,9 @@ type SW struct {
 	y string
 	c [][]int
 	b [][]string
+	maxscore int
+	xmax int
+	ymax int
 }
 
 func NewSW(y string,x string) *SW {
@@ -21,14 +25,15 @@ func NewSW(y string,x string) *SW {
 		c[y] = make([]int,ylen,ylen)
 		b[y] = make([]string,ylen)
 	}
-	SW := &SW{x:x,y:y,c:c,b:b}
+	SW := &SW{x:x,y:y,c:c,b:b,maxscore:0}
 	return SW
 }
 func (l SW) Strlen() (int,int){
-	return len(l.x),len(l.y)
+	//return len(l.x),len(l.y)
+	return l.xmax,l.ymax
 }
 
-func (l SW) Length() {
+func (l *SW) Length() {
 	var m = len(l.x)+1
 	var n = len(l.y)+1
 	for i:=1; i<m ;i++{
@@ -58,6 +63,11 @@ func (l SW) Length() {
 			if 0>=l.c[i][j] {
 				l.c[i][j] = 0
 				l.b[i][j] = "aborted"
+			}
+			if l.maxscore<l.c[i][j] {
+				l.maxscore = l.c[i][j]
+				l.xmax = i
+				l.ymax = j
 			}
 		}
 	}
@@ -95,6 +105,7 @@ func main() {
 	lcs.Length()
 	fmt.Println(lcs.b)
 	fmt.Println(lcs.c)
+	fmt.Println(lcs.xmax)
 	var lx,ly = lcs.Strlen()
 	var p,q,r =lcs.Print(lx,ly)
 	fmt.Println(p)
