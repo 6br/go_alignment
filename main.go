@@ -38,8 +38,8 @@ func main() {
 	flag.Parse()
 	var ary string
 	var ary2 string
-	fmt.Println(flag.Arg(1))
-	if flag.Arg(1)==""{
+
+	if flag.Arg(1)==""{ //正規表現で、ドットを含むのであれば。 
 		ary = readfile("sequence.fasta")
 		ary2 = readfile("sequence2.fasta")
 	} else {
