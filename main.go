@@ -6,6 +6,7 @@ import (
 	"io"
 	"bufio"
 	"flag"
+	"regexp"
 	. "./src"
 )
 
@@ -42,6 +43,9 @@ func main() {
 	if flag.Arg(1)==""{ //正規表現で、ドットを含むのであれば。 
 		ary = readfile("sequence.fasta")
 		ary2 = readfile("sequence2.fasta")
+	} else if m,_ := regexp.MatchString("\\.",flag.Arg(1)); m {
+		ary = readfile(flag.Arg(1))
+		ary2 = readfile(flag.Arg(2))
 	} else {
 		ary = flag.Arg(1)
 		ary2 = flag.Arg(2)
