@@ -53,9 +53,9 @@ func main() {
 
 	var lcs DPMatrix
 	switch flag.Arg(0) {
-	case "1": lcs = NewLCS(ary,ary2)
-	case "2": lcs = NewSW(ary,ary2)
-	default : lcs = NewNW(ary,ary2)
+		case "1": lcs = NewLCS(ary,ary2)
+		case "2": lcs = NewSW(ary,ary2)
+		default : lcs = NewNW(ary,ary2)
 	}
 
 	//var lcs DPMatrix = NewLCS("attataatgtgct","ggattgtac") //stringのGoにおける実装上、半角英数でなければならない。
@@ -64,7 +64,7 @@ func main() {
 	var p,q,r = lcs.Print(lx,ly)
 	j:=0
 	for i:=50;i<=len(p);i+=50 {
-		fmt.Println("from ",j," to ",i)
+		fmt.Println("from",j,"to",i)
 		fmt.Println(p[j:i])
 		fmt.Println(q[j:i])
 		fmt.Println(r[j:i])
