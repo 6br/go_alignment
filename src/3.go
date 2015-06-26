@@ -56,6 +56,10 @@ func (l NW) Length() {
 	}
 }
 
+func (l NW) Score() int {
+	x,y := l.Strlen()
+	return l.c[x][y]
+}
 func (l NW) Strlen() (int,int){
 	return len(l.x),len(l.y)
 }

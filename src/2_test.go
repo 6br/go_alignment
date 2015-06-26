@@ -11,9 +11,13 @@ func TestDescribe(t *testing.T){
 		Context("and we calculate LCS",func() {
 			lcs.Length()
 			It("should be the correct string",func() {
-				var lx,ly = lcs.Strlen() 
+				var lx,ly = lcs.Strlen()
 				var s,_,_ string =	lcs.Print(lx,ly)
 				Expect(s).To(Equal,"aagcgga")
+			})
+			It("should be the correct score",func() {
+				var s int = lcs.Score()
+				Expect(s).To(Equal,7)
 			})
 		})
 	})

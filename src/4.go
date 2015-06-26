@@ -32,6 +32,9 @@ func (l SW) Strlen() (int,int){
 	//return len(l.x),len(l.y)
 	return l.xmax,l.ymax
 }
+func (l SW) Score() int {
+	return l.maxscore
+}
 
 func (l *SW) Length() {
 	var m = len(l.x)+1

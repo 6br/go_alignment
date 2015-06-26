@@ -72,6 +72,11 @@ func (l LCS) Print(i int,j int) (string,string,string) {
 	}
 	return p,"",""
 }
+func (l LCS) Score() int {
+	var lx,ly = l.Strlen() 
+	p,_,_ := l.Print(lx,ly)
+	return len(p)
+}
 
 func Benchmark(b *testing.B){
 var lcs = NewLCS("jkahkncjknewrkfiljsklhlsfhskujejjflwjklnvmxcnvlcsdjfjjsdljdslfjsljfhedjwljkshfuejcklsjs","* klvnwoihwoihtewkllnxcnvsmvmjsdnjkjnshuvhsuiujeijwiodkakcopjnsdvsvbfsfvxjhsduifjkshskfrf")

@@ -21,6 +21,10 @@ func TestDescribe2(t *testing.T){
 			It("should be the correct string of 3rd line",func() {
 				Expect(r).To(Equal,"gct--a-gg")
 			})
+			It("should be the correct score",func() {
+				var s int = lcs.Score()
+				Expect(s).To(Equal,-4)
+			})
 		})
 	})
 }
