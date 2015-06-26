@@ -20,7 +20,7 @@ namespace Solution {
             
             // Calculate
             int tempcost=0;
-            int tempninku=0;
+            int tempningetsu=0;
             for(var i=0; i < Math.Pow(2,N);i++){
                 for(var j=0;j<N;j++){
                     flag[j]=(flag[j]==0)?1:0;
@@ -29,14 +29,14 @@ namespace Solution {
                 for(var j=0;j<N;j++){
                     if(flag[j]==1){
                         string[] datum=data[j];
-                        tempninku+=Int32.Parse(datum[0]);
+                        tempningetsu+=Int32.Parse(datum[0]);
                         tempcost+=Int32.Parse(datum[1]);
                     }
                    
                 }
-                if(tempninku>=Needs&&tempcost<cost){cost=tempcost;}
+                if(tempningetsu>=Needs&&tempcost<cost){cost=tempcost;}
                 tempcost=0;
-                tempninku=0;
+                tempningetsu=0;
             }
             System.Console.WriteLine(cost);
         }

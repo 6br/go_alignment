@@ -19,7 +19,7 @@ func nextInt() int {
 }
 
 func main() {
-		//scan
+	//scan
     sc.Split(bufio.ScanWords)
     m := nextInt()
     n := nextInt()
@@ -36,13 +36,13 @@ func main() {
     }
     //fmt.Println(m,q,r,sum_q,sum_r)
 
-		//calculate
+    //calculate
     dp_m := sum_q - m
     dp := make([]int,dp_m+1)
     for i:=0; i<n ;i++ {
         r_tmp := r[i]
         q_tmp := q[i]
-    //fmt.Println(dp,r[i],q[i])
+        //fmt.Println(dp,r[i],q[i])
         for j:=dp_m; j>= q_tmp; j-- {
             if dp[j] < dp[j-q_tmp]+r_tmp{
                 dp[j] = dp[j-q_tmp]+r_tmp

@@ -62,7 +62,12 @@ func main() {
 	lcs.Length()
 	var lx,ly = lcs.Strlen()
 	var p,q,r = lcs.Print(lx,ly)
-	fmt.Println(p)
-	fmt.Println(q)
-	fmt.Println(r)
+	j:=0
+	for i:=50;i<=len(p);i+=50 {
+		fmt.Println("from ",j," to ",i)
+		fmt.Println(p[j:i])
+		fmt.Println(q[j:i])
+		fmt.Println(r[j:i])
+		j=i+1
+	}
 }
