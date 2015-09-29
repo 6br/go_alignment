@@ -4,6 +4,7 @@ package main
 
 import . "./interface"
 import "fmt"
+import "math"
 
 type Gotoh struct {
 	x string
@@ -43,12 +44,15 @@ func (l Gotoh) Score() int {
 func (l *Gotoh) Length() {
 	var m = len(l.x)+1
 	var n = len(l.y)+1
+	l.h[1][0][0] = math.MinInt64
+	l.h[2][0][0] = math.MinInt64
 	for i:=1; i<m ;i++{
-		l.h[0][i][0] = 0
+		l.h[1][i][0] = l.settings.Cost(i)
 	}
 	for j:=1; j<n ;j++{
-		l.h[0][0][j] = 0
+		l.h[2][0][j] = l.settings.Cost(j) 
 	}
+
 /*
 	for i:=1; i<m ;i++{
 		for j:=1; j<n ;j++{
@@ -87,7 +91,10 @@ func (l Gotoh) Print(int,int)(string, string, string){
 }
 
 func main() {
-	var lcs = NewGotoh("gctaggaa","aattgaag") //stringのGoにおける実装上、半角英数でなければならない。
+	//arr := make([][]int,0)
+	arr := [][]int{{1,-1,-1,-1},{-1,1,-1,-1},{-1,-1,1,-1},{-1,-1,-1,1}}
+	var settings = NewConstants(7,1,arr)
+	var lcs = NewGotoh("gctaggaa","aattgaag",*settings) //stringのGoにおける実装上、半角英数でなければならない。
 	lcs.Length()
 	fmt.Println(lcs.h)
 	fmt.Println(lcs.phi)
