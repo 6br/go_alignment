@@ -31,18 +31,13 @@ func NewGotoh(y string,x string,settings Constants) *Gotoh {
 	Gotoh.Constants = settings
 	return Gotoh
 }
+
 func (l Gotoh) Strlen() (int,int){
 	return len(l.x),len(l.y)
-	//return l.xmax,l.ymax
 }
 
-
 func (l Gotoh) Substitution(x int,y int) int{
-	if l.x[x-1] == l.y[y-1] {
-		return 1
-	}else{
-		return -1
-	}
+	return l.Constants.Substitution(l.x[x-1],l.y[y-1])
 }
 
 func Max(a int, b int, c int) (int, int) {
@@ -56,7 +51,6 @@ func Max(a int, b int, c int) (int, int) {
 }
 
 func (l Gotoh) Score() int {
-	//e, _ := Max(l.h[0][len(l.x)][len(l.y)],l.h[1][len(l.x)][len(l.y)],l.h[2][len(l.x)][len(l.y)])
 	e, _ := l.ScoreArgs(len(l.x),len(l.y))
   return e
 }

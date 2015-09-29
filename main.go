@@ -50,6 +50,7 @@ func readconfig(i string) Constants {
 	var err error
   var ary [4][]string
   var ary2int [][]int
+	var charlist []string
 
 	// ファイルを読み込みモードでオープン
 	read_file, _ := os.OpenFile(i, os.O_RDONLY, 0600)
@@ -77,8 +78,9 @@ func readconfig(i string) Constants {
 		}
 		ary2int = append(ary2int,tem)
 	}
+	charlist = {"A","C","G","T"}
 	var settings *Constants
-	settings = NewConstants(d,e,ary2int)
+	settings = NewConstants(d,e,ary2int,charlist)
 	return *settings
 }
 
