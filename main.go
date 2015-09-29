@@ -8,6 +8,7 @@ import (
 	"flag"
 	"regexp"
 	"strings"
+	"strconv"
 	. "./src"
 )
 
@@ -42,6 +43,46 @@ func readfasta(i string) (string,string) {
 	return ary[0], ary[1]
 }
 
+func readconfig(i string) Constants {
+	var reader *bufio.Reader
+	var line []byte
+	var err error
+  var ary [4][]string
+  var ary2int [][]int
+
+	// ファイルを読み込みモードでオープン
+	read_file, _ := os.OpenFile(i, os.O_RDONLY, 0600)
+	// Readerを用意
+	reader = bufio.NewReader(read_file)
+
+	line, _ , err = reader.ReadLine()
+	tmp := strings.Split(string(line)," ")
+	
+	d, _ := strconv.Atoi(tmp[0])
+	e, _ := strconv.Atoi(tmp[1])
+
+	for j:=0;;j++ {
+		line,_, err = reader.ReadLine()
+		// EOFなら終了
+		if err == io.EOF {
+			break
+		}
+		// 1行読み出す
+	  fmt.Println(strings.Fields(string(line)))
+		ary[j] = strings.Fields(string(line))
+		var tem []int
+    for key, value := range ary[j] {
+			fmt.Println(key,value)
+			temp, _ := strconv.Atoi(value)
+			tem = append(tem,temp)
+		}
+		ary2int = append(ary2int,tem)
+	}
+	var settings *Constants
+	settings = NewConstants(d,e,ary2int)
+	return *settings
+}
+
 func readfile(i string) string {
 	var reader *bufio.Reader
 	var line []byte
@@ -74,12 +115,12 @@ func main() {
 	if flag.Arg(1)==""{ //正規表現で、ドットを含むのであれば。 
 		ary = readfile("sequence.fasta")
 		ary2 = readfile("sequence2.fasta")
+	} else if m,_ := regexp.MatchString("\\.txt",flag.Arg(1)); m {
+		ary, ary2 = readfasta(flag.Arg(1))
+		var settings = readconfig(flag.Arg(2))
 	} else if m,_ := regexp.MatchString("\\.",flag.Arg(2)); m {
 		ary = readfile(flag.Arg(1))
 		ary2 = readfile(flag.Arg(2))
-	} else if m,_ := regexp.MatchString("\\.",flag.Arg(1)); m {
-		ary, ary2 = readfasta(flag.Arg(1))
-		fmt.Println(ary)
 		fmt.Println(ary2)
 	} else {
 		ary = flag.Arg(1)
@@ -90,7 +131,7 @@ func main() {
 	switch flag.Arg(0) {
 		case "1": lcs = NewLCS(ary,ary2)
 		case "2": lcs = NewSW(ary,ary2)
-	  //case "3": lcs = NewGotoh(ary,ary2)
+		case "3": lcs = NewGotoh(ary,ary2,settings)
 		default : lcs = NewNW(ary,ary2)
 	}
 
