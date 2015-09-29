@@ -4,13 +4,14 @@ package alignment
 import (
 	. "github.com/r7kamura/gospel"
 	"testing"
+	. "./interface"
 )
 
-func TestDescribe3(t *testing.T){
+func TestDescribe4(t *testing.T){
 	Describe(t,"We have the other strings", func() {
 	arr := [][]int{{1,-1,-1,-1},{-1,1,-1,-1},{-1,-1,1,-1},{-1,-1,-1,1}}
 	var settings = NewConstants(2,1,arr)
-	var lcs = NewGotoh("ggatgcatgcatgc","atgcatgcatgccc",*settings,2,1)
+	var lcs = NewGotoh("ggatgcatgcatgc","atgcatgcatgccc",*settings)
 		Context("and we calculate by Gotoh-algo",func() {
 			lcs.Length()
 			var lx,ly = lcs.Strlen()
@@ -19,14 +20,14 @@ func TestDescribe3(t *testing.T){
 				Expect(p).To(Equal,"--atgcatgcatgccc")
 			})
 			It("should be the correct string of 2nd line",func() {
-				Expect(q).To(Equal,"!!!")
+				Expect(q).To(Equal,"  ||||||||||| | ")
 			})
 			It("should be the correct string of 3rd line",func() {
-				Expect(r).To(Equal,"agg")
+				Expect(r).To(Equal,"ggatgcatgcatg-c-")
 			})
 			It("should be the correct score",func() {
 				var s int = lcs.Score()
-				Expect(s).To(Equal,9)
+				Expect(s).To(Equal,10)
 			})
 		})
 	})

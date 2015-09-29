@@ -10,7 +10,7 @@ import (
 	"strings"
 	"strconv"
 	. "./src"
-	//	. "./src/interface"
+	. "./src/interface"
 )
 
 //fasta形式で併記されている文字列を読み取り、配列に返す。
@@ -69,11 +69,9 @@ func readconfig(i string) Constants {
 			break
 		}
 		// 1行読み出す
-	  fmt.Println(strings.Fields(string(line)))
 		ary[j] = strings.Fields(string(line))
 		var tem []int
-    for key, value := range ary[j] {
-			fmt.Println(key,value)
+    for _, value := range ary[j] {
 			temp, _ := strconv.Atoi(value)
 			tem = append(tem,temp)
 		}
@@ -120,7 +118,6 @@ func main() {
 	} else if m,_ := regexp.MatchString("\\.txt",flag.Arg(1)); m {
 		ary, ary2 = readfasta(flag.Arg(1))
 		settings = readconfig(flag.Arg(2))
-		fmt.Println(settings)
 	} else if m,_ := regexp.MatchString("\\.",flag.Arg(2)); m {
 		ary = readfile(flag.Arg(1))
 		ary2 = readfile(flag.Arg(2))
@@ -141,12 +138,13 @@ func main() {
 	var lx,ly = lcs.Strlen()
 	var p,q,r = lcs.Print(lx,ly)
 	j:=0
-	for i:=50;i<=len(p);i+=50 {
-		if i > len(p)-50 { i = len(p)}
+	fmt.Println("Score:",lcs.Score())
+	for i:=50; i<len(p)+50; i+=50 {
+		if i > len(p) { i = len(p)}
 		fmt.Println("from",j,"to",i)
 		fmt.Println(p[j:i])
 		fmt.Println(q[j:i])
 		fmt.Println(r[j:i])
-		j=i+1
+		j = i+1
 	}
 }

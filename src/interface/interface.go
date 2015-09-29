@@ -21,3 +21,7 @@ func NewConstants(e int,d int,s [][]int) *Constants{
 func (c Constants) Cost(l int) int {
 	return -c.e * (l-1) - c.d
 }
+
+func (c Constants) Geted()(int,int){
+  return c.e,c.d
+}

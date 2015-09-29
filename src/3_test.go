@@ -3,6 +3,7 @@ package alignment
 import (
 	. "github.com/r7kamura/gospel"
 	"testing"
+	. "./interface"
 )
 
 func TestDescribe2(t *testing.T){

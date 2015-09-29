@@ -11,12 +11,10 @@ type Gotoh struct {
 	y string
 	phi [][][]int
 	h [][][]int
-	d int
-	e int
 	Constants
 }
 
-func NewGotoh(y string,x string,settings Constants,d int,e int) *Gotoh {
+func NewGotoh(y string,x string,settings Constants) *Gotoh {
 	xlen := len(x)+1
 	ylen := len(y)+1
 	phi := make([][][]int,3)
@@ -29,7 +27,7 @@ func NewGotoh(y string,x string,settings Constants,d int,e int) *Gotoh {
 		  h[i][y] = make([]int,ylen)
     }
   }
-  Gotoh := &Gotoh{x:x,y:y,phi:phi,h:h,d:d,e:e}
+  Gotoh := &Gotoh{x:x,y:y,phi:phi,h:h}
 	Gotoh.Constants = settings
 	return Gotoh
 }
@@ -58,8 +56,9 @@ func Max(a int, b int, c int) (int, int) {
 }
 
 func (l Gotoh) Score() int {
-	e, _ := Max(l.h[0][len(l.x)][len(l.y)],l.h[1][len(l.x)][len(l.y)],l.h[2][len(l.x)][len(l.y)])
-	return e
+	//e, _ := Max(l.h[0][len(l.x)][len(l.y)],l.h[1][len(l.x)][len(l.y)],l.h[2][len(l.x)][len(l.y)])
+	e, _ := l.ScoreArgs(len(l.x),len(l.y))
+  return e
 }
 
 func (l Gotoh) ScoreArgs(x int,y int) (int,int) {
@@ -89,11 +88,12 @@ func (l *Gotoh) Length() {
       l.h[0][i][j] = nexth + l.Substitution(i,j)
 			l.phi[0][i][j] = nextphi
 			//Update H^2 (l.h[1])
-			nexth, nextphi = Max(l.h[0][i-1][j]-l.d,l.h[1][i-1][j]-l.e,l.h[2][i-1][j]-l.d)
+			e,d := l.Geted()
+			nexth, nextphi = Max(l.h[0][i-1][j]-d,l.h[1][i-1][j]-e,l.h[2][i-1][j]-d)
 			l.h[1][i][j] = nexth
 			l.phi[1][i][j] = nextphi
 			//Update H^3 (l.h[2])
-			nexth, nextphi = Max(l.h[0][i][j-1]-l.d,math.MinInt64,l.h[2][i][j-1]-l.e)
+			nexth, nextphi = Max(l.h[0][i][j-1]-d,math.MinInt64,l.h[2][i][j-1]-e)
 			l.h[2][i][j] = nexth
 			l.phi[2][i][j] = nextphi
 		}
