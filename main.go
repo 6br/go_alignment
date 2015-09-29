@@ -10,6 +10,7 @@ import (
 	"strings"
 	"strconv"
 	. "./src"
+	//	. "./src/interface"
 )
 
 //fasta形式で併記されている文字列を読み取り、配列に返す。
@@ -111,17 +112,18 @@ func main() {
 	flag.Parse()
 	var ary string
 	var ary2 string
+	var settings Constants
 
 	if flag.Arg(1)==""{ //正規表現で、ドットを含むのであれば。 
 		ary = readfile("sequence.fasta")
 		ary2 = readfile("sequence2.fasta")
 	} else if m,_ := regexp.MatchString("\\.txt",flag.Arg(1)); m {
 		ary, ary2 = readfasta(flag.Arg(1))
-		var settings = readconfig(flag.Arg(2))
+		settings = readconfig(flag.Arg(2))
+		fmt.Println(settings)
 	} else if m,_ := regexp.MatchString("\\.",flag.Arg(2)); m {
 		ary = readfile(flag.Arg(1))
 		ary2 = readfile(flag.Arg(2))
-		fmt.Println(ary2)
 	} else {
 		ary = flag.Arg(1)
 		ary2 = flag.Arg(2)
