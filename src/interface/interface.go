@@ -11,11 +11,15 @@ type Constants struct {
   e int
 	d int
 	s [][]int
-	charlist []string
+	charlist []uint8
 }
 
 func NewConstants(e int,d int,s [][]int,c []string) *Constants{
-	NC := &Constants{e:e,d:d,s:s,charlist:c}
+	var ch []uint8
+	for i:=0; i<len(c); i++ {
+		ch =append(ch, c[i])
+	}
+	NC := &Constants{e:e,d:d,s:s,charlist:ch}
 	return NC
 }
 
@@ -27,13 +31,13 @@ func (c Constants) Geted()(int, int){
   return c.e, c.d
 }
 
-func (c Constants) arraysearch(query string)(int){
+func (c Constants) arraysearch(query uint8)(int){
 	for i:=0; i < len(c.charlist); i++{
 		if(query == c.charlist[i]){return i}
 	}
 	return -1
 }
 
-func (c Constants) Substitution(a string, b string)(int){
+func (c Constants) Substitution(a uint8, b uint8)(int){
   return c.s[c.arraysearch(a)][c.arraysearch(b)]
 }
