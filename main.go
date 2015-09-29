@@ -7,38 +7,39 @@ import (
 	"bufio"
 	"flag"
 	"regexp"
+	"strings"
 	. "./src"
 )
 
 //fasta形式で併記されている文字列を読み取り、配列に返す。
-func readfasta(i string) []string {
+func readfasta(i string) (string,string) {
 
 	var reader *bufio.Reader
 	var line []byte
 	var err error
-	var ary []string
+	var ary [2]string
 	// ファイルを読み込みモードでオープン
 	read_file, _ := os.OpenFile(i, os.O_RDONLY, 0600)
 	// Readerを用意
 	reader = bufio.NewReader(read_file)
 
-	line, _ , err = reader.ReadLine()
+	//line, _ , err = reader.ReadLine()
 	var j = -1
 	for {
+		line, _ , err = reader.ReadLine()
 		// EOFなら終了
 		if err == io.EOF {
 			break
 		}
 		// 1行読み出す
-		line,_, err = reader.ReadLine()
-		if line[0] == '>' {
+		if line[0] == 62 {
       j++
+			ary[j] = ""
   	}else{
-		  ary[j] += string(line)
+		  ary[j] += strings.ToLower(string(line))
 	  }
 	}
-	fmt.Println(ary)
-	return ary
+	return ary[0], ary[1]
 }
 
 func readfile(i string) string {
@@ -69,7 +70,6 @@ func main() {
 	flag.Parse()
 	var ary string
 	var ary2 string
-	var array []string
 
 	if flag.Arg(1)==""{ //正規表現で、ドットを含むのであれば。 
 		ary = readfile("sequence.fasta")
@@ -78,9 +78,9 @@ func main() {
 		ary = readfile(flag.Arg(1))
 		ary2 = readfile(flag.Arg(2))
 	} else if m,_ := regexp.MatchString("\\.",flag.Arg(1)); m {
-		array = readfasta(flag.Arg(1))
-		ary = array[0]
-		ary2 = array[1]
+		ary, ary2 = readfasta(flag.Arg(1))
+		fmt.Println(ary)
+		fmt.Println(ary2)
 	} else {
 		ary = flag.Arg(1)
 		ary2 = flag.Arg(2)
@@ -99,6 +99,7 @@ func main() {
 	var p,q,r = lcs.Print(lx,ly)
 	j:=0
 	for i:=50;i<=len(p);i+=50 {
+		if i > len(p)-50 { i = len(p)}
 		fmt.Println("from",j,"to",i)
 		fmt.Println(p[j:i])
 		fmt.Println(q[j:i])
