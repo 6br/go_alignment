@@ -8,12 +8,12 @@ DNA is composed by ATGC and when we want to know the degree of similarity betwee
 
 ## Test-framework
 This is tested by "Gospel", which is Behaviour Driven Development Testing Framework and named after a certain movie.
-If you want to test this tool, you have to install it.
+If you want to test this tool, you'll have to install it.
 
 ## Usage
-go run main.go [flags] [int] [options]
+./go\_alignment [flags] [int] [options]
 
-flags: -c || --config -> write a config file including gap scores and a substitution matrix.
+flags(option): -c || --config -> write a config file including gap scores and a substitution matrix.
 
 i.e. (config.txt)
                7 1 % d e => gap score is calculated by g(l) = -e * (l - 1) - d.
@@ -22,7 +22,7 @@ i.e. (config.txt)
                -1 -1  1 -1
                -1 -1 -1  1
 
-int : 0 -> NW, 1 -> LCS, 2 -> SW, 3-> Gotoh
+int : 0(default) -> NW, 1 -> LCS, 2 -> SW, 3-> Gotoh
 
 options :
 

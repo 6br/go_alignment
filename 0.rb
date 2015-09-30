@@ -1,5 +1,4 @@
 #! /bin/ruby
-#参考：http://d.hatena.ne.jp/E_Mattsan/20121122/1353588273
 require 'benchmark'
 
 def subsequence a
