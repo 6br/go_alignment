@@ -138,7 +138,7 @@ func (l Gotoh) Print(i int,j int)(string, string, string){
 func main() {
 	arr := [][]int{{1,-1,-1,-1},{-1,1,-1,-1},{-1,-1,1,-1},{-1,-1,-1,1}}
 	var settings = NewConstants(2,1,arr)
-	var lcs = NewGotoh("ggatgcatgcatgc","atgcatgcatgccc",*settings,2,1)
+	var lcs = NewGotoh("ggatgcatgcatgc","atgcatgcatgccc",*settings)
 	lcs.Length()
 	fmt.Println(lcs.h)
 	fmt.Println(lcs.phi)
