@@ -6,6 +6,8 @@
 
 # Usage
 go run main.go [int] [options]
+
 int : 0 -> NW, 1 -> LCS, 2 -> SW, 3-> Gotoh
+
 options : i.e. aagt aact -> alignment of "aagt" and "aact"
                1.fasta 2.fasta -> alignment of fasta files. 

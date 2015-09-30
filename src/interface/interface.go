@@ -1,5 +1,7 @@
 package alignment
 
+import "strings"
+
 type DPMatrix interface {
 	Length()
 	Print(int,int) (string,string,string)
@@ -14,10 +16,11 @@ type Constants struct {
 	charlist []uint8
 }
 
-func NewConstants(e int,d int,s [][]int,c []string) *Constants{
+func NewConstants(e int,d int,s [][]int,c string) *Constants{
 	var ch []uint8
+  c = strings.ToLower(c)
 	for i:=0; i<len(c); i++ {
-		ch =append(ch, c[i])
+		ch = append(ch, c[i])
 	}
 	NC := &Constants{e:e,d:d,s:s,charlist:ch}
 	return NC

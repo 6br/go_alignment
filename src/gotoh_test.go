@@ -10,7 +10,7 @@ import (
 func TestDescribe4(t *testing.T){
 	Describe(t,"We have the other strings", func() {
 	arr := [][]int{{1,-1,-1,-1},{-1,1,-1,-1},{-1,-1,1,-1},{-1,-1,-1,1}}
-	charlist := "ACGT"
+	charlist := "acgt"
 	var settings = NewConstants(2,1,arr,charlist)
 	var lcs = NewGotoh("ggatgcatgcatgc","atgcatgcatgccc",*settings)
 		Context("and we calculate by Gotoh-algo",func() {
