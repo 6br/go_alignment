@@ -149,9 +149,9 @@ func main() {
 	for i:=50; i<len(p)+50; i+=50 {
 		if i > len(p) { i = len(p)}
 		fmt.Println("from",j,"to",i)
-		fmt.Println(p[j:i])
-		fmt.Println(q[j:i])
 		fmt.Println(r[j:i])
+		fmt.Println(q[j:i])
+		fmt.Println(p[j:i])
 		j = i+1
 	}
 }
