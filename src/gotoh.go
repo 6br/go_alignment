@@ -98,11 +98,11 @@ func (l *Gotoh) Length() {
 	}
 }
 
-func (l Gotoh) Print(i int,j int)(string, string, string){
+func (l Gotoh) Print(i int,j int) (string, string, string){
 	var p,q,r string
-	if i<=0 && j<=0 {
+	if i <= 0 && j <= 0 {
 		return "","",""
-	}else if i<=0{
+	} else if i <= 0 {
 		//p,q,r = l.Print(i,j-1)
 		for ;j>0;j--{
 		p += "-"
@@ -110,7 +110,7 @@ func (l Gotoh) Print(i int,j int)(string, string, string){
 		r += fmt.Sprintf("%c",l.y[j-1])
 	  }
 		return p,q,r
-	}else if j<=0{
+	} else if j <=0 {
 	  //p,q,r = l.Print(i-1,j)
 		for ;i>0;i--{
 		p += fmt.Sprintf("%c",l.x[i-1])
@@ -155,4 +155,3 @@ func main() {
 	fmt.Println(r)
 }
 */
-
