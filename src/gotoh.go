@@ -66,9 +66,13 @@ func (l *Gotoh) Length() {
 	l.h[1][0][0] = math.MinInt64
 	l.h[2][0][0] = math.MinInt64
 	for i:=1; i<=m ;i++{
+    //l.h[0][i][0] = l.Cost(i)
 		l.h[1][i][0] = l.Cost(i)
+    //l.h[2][i][0] = math.MinInt32
 	}
 	for j:=1; j<=n ;j++{
+    //l.h[0][0][j] = l.Cost(j)
+    //l.h[1][0][j] = math.MinInt32
 		l.h[2][0][j] = l.Cost(j)
 	}
 

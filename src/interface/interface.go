@@ -16,7 +16,7 @@ type Constants struct {
 	charlist []uint8
 }
 
-func NewConstants(e int,d int,s [][]int,c string) *Constants{
+func NewConstants(d int,e int,s [][]int,c string) *Constants{
 	var ch []uint8
   c = strings.ToLower(c)
 	for i:=0; i<len(c); i++ {
