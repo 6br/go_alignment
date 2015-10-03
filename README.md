@@ -1,5 +1,6 @@
 go-NW/SW/LCS/NWG
 ===
+[![Build Status](https://drone.io/github.com/6br/go_alignment/status.png)](https://drone.io/github.com/6br/go_alignment/latest)
 
 This package is an implementation of "Needleman-Bunsch" , "Smith-Waterman" , "Gotoh" and "LCS" Algorithm which is used in DNA analysing. 
 
