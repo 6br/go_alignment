@@ -46,3 +46,7 @@ func (c Constants) arraysearch(query uint8) int {
 func (c Constants) Substitution(a uint8, b uint8) int {
 	return c.s[c.arraysearch(a)][c.arraysearch(b)]
 }
+
+func (c Constants) Getscore(a int,b int) int {
+	return c.s[a-1][b-1]
+}

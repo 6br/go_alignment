@@ -61,7 +61,7 @@ func (l LCS) Print(i int, j int) (string, string, string) {
 	}
 	var p string
 	if l.b[i][j] == "\\" {
-		//	fmt.Printf("%c",x[i-1])
+		//fmt.Printf("%c",x[i-1])
 		p, _, _ = l.Print(i-1, j-1)
 		//fmt.Printf("%c",x[i-1])
 		p += fmt.Sprintf("%c", l.x[i-1])
