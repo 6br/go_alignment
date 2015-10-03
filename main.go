@@ -142,6 +142,8 @@ func main() {
 		lcs = NewSW(ary, ary2)
 	case "3":
 		lcs = NewGotoh(ary, ary2, settings)
+	case "4":
+		lcs = NewMEA(ary, ary2, settings)
 	default:
 		lcs = NewNW(ary, ary2)
 	}

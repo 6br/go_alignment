@@ -80,7 +80,6 @@ func (l NW) Print(i int, j int) (string, string, string) {
 		p += fmt.Sprintf("%c", l.x[i-1])
 		q += " "
 		r += "-"
-
 	} else {
 		p, q, r = l.Print(i, j-1)
 		p += "-"
