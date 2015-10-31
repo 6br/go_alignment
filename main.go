@@ -41,6 +41,7 @@ func readfasta(i string) (string, string) {
 			j++
 			ary[j] = ""
 		} else {
+			//遅い
 			ary[j] += strings.ToLower(string(line))
 		}
 	}
@@ -106,6 +107,7 @@ func readfile(i string) string {
 		}
 		// 1行読み出す
 		line, _, err = reader.ReadLine()
+		//遅い
 		ary += strings.ToLower(string(line))
 	}
 	return ary
