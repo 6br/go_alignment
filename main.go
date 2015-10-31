@@ -157,14 +157,20 @@ func main() {
 	var p, q, r = lcs.Print(lx, ly)
 	j := 0
 	fmt.Println("Score:", lcs.Score())
-	for i := interval - 1; i < len(p)+interval; i += interval {
-		if i > len(p) {
-			i = len(p)
+	if interval >= 1 && interval < len(p) {
+		for i := interval - 1; i < len(p)+interval; i += interval {
+			if i > len(p) {
+				i = len(p)
+			}
+			fmt.Println("from", j, "to", i)
+			fmt.Println(r[j:i])
+			fmt.Println(q[j:i])
+			fmt.Println(p[j:i])
+			j = i + 1
 		}
-		fmt.Println("from", j, "to", i)
-		fmt.Println(r[j:i])
-		fmt.Println(q[j:i])
-		fmt.Println(p[j:i])
-		j = i + 1
+	} else {
+		fmt.Println(r)
+		fmt.Println(q)
+		fmt.Println(p)
 	}
 }
