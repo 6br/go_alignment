@@ -5,7 +5,7 @@ go-NW/SW/LCS/NWG
 This package is an implementation of "Needleman-Bunsch" , "Smith-Waterman" , "Gotoh" and "LCS" Algorithm which is used in DNA analysing.
 
 ## Description
-DNA is composed by ATGC and when we want to know the degree of similarity between two sequences, we can use this tool to align those sequences and caclucate the score.
+DNA is composed by ATGC and when we want to know the degree of similarity between two sequences, we can use this tool to align those sequences and calculate the score.
 
 ## Test-framework
 This is tested by "Gospel", which is Behaviour Driven Development Testing Framework and named after a certain movie.
@@ -25,7 +25,7 @@ go run main.go [flags] [int] [options]
 
 flags(option):
 
-* -c || --config -> Write a config file including gap scores and a substitution matrix.
+* -c || --config -> Write a configure file including gap scores and a substitution matrix.
 * -i -> Write an interval of alignment result sequences. (default: 50)
 
 i.e. (config.txt)
