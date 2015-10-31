@@ -40,16 +40,6 @@ func (l Gotoh) Substitution(x int, y int) int {
 	return l.Constants.Substitution(l.x[x-1], l.y[y-1])
 }
 
-func Max(a int, b int, c int) (int, int) {
-	if c > a && c > b {
-		return c, 2
-	} else if b > a && b > c {
-		return b, 1
-	} else {
-		return a, 0
-	}
-}
-
 func (l Gotoh) Score() int {
 	e, _ := l.ScoreArgs(len(l.x), len(l.y))
 	return e
@@ -99,6 +89,12 @@ func (l *Gotoh) Length() {
 }
 
 func (l Gotoh) Print(i int, j int) (string, string, string) {
+	_, arg := Max(l.h[0][i][j], l.h[1][i][j], l.h[2][i][j])
+	//fmt.Println(l.h[0][i][j], l.h[1][i][j], l.h[2][i][j], arg)
+	return l.Print_iter(i, j, arg)
+}
+
+func (l Gotoh) Print_iter(i int, j int, args int) (string, string, string) {
 	var p, q, r string
 	if i <= 0 && j <= 0 {
 		return "", "", ""
@@ -119,19 +115,22 @@ func (l Gotoh) Print(i int, j int) (string, string, string) {
 		}
 		return p, q, r
 	}
-	_, args := l.ScoreArgs(i, j)
+
 	if args == 0 {
-		p, q, r = l.Print(i-1, j-1)
+		args = l.phi[args][i][j]
+		p, q, r = l.Print_iter(i-1, j-1, args)
 		p += fmt.Sprintf("%c", l.x[i-1])
 		q += "|"
 		r += fmt.Sprintf("%c", l.y[j-1])
 	} else if args == 1 {
-		p, q, r = l.Print(i-1, j)
+		args = l.phi[args][i][j]
+		p, q, r = l.Print_iter(i-1, j, args)
 		p += fmt.Sprintf("%c", l.x[i-1])
 		q += " "
 		r += "-"
 	} else {
-		p, q, r = l.Print(i, j-1)
+		args = l.phi[args][i][j]
+		p, q, r = l.Print_iter(i, j-1, args)
 		p += "-"
 		q += " "
 		r += fmt.Sprintf("%c", l.y[j-1])
