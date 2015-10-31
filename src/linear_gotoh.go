@@ -123,16 +123,16 @@ func (l LGotoh) Print(i int, j int) (string, string, string) {
 
 /*
 func main() {
-	arr := [][]int{{1,-1,-1,-1},{-1,1,-1,-1},{-1,-1,1,-1},{-1,-1,-1,1}}
-	var settings = NewConstants(2,1,arr)
-	var lcs = NewLGotoh("ggatgcatgcatgc","atgcatgcatgccc",*settings)
+	arr := [][]int{{1, -1, -1, -1}, {-1, 1, -1, -1}, {-1, -1, 1, -1}, {-1, -1, -1, 1}}
+	charlist := "acgt"
+	var settings = NewConstants(2, 1, arr, charlist)
+	var lcs = NewLGotoh("ggatgcatgcatgc", "atgcatgcatgccc", *settings)
 	lcs.Length()
 	fmt.Println(lcs.h)
-	fmt.Println(lcs.phi)
 	fmt.Println(lcs.Score())
 	fmt.Println(lcs.h[0][8][8])
-	var lx,ly = lcs.Strlen()
-	var p,q,r =lcs.Print(lx,ly)
+	var lx, ly = lcs.Strlen()
+	var p, q, r = lcs.Print(lx, ly)
 	fmt.Println(p)
 	fmt.Println(q)
 	fmt.Println(r)
