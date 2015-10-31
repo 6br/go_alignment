@@ -6,6 +6,8 @@ import . "./interface"
 import "fmt"
 import "math"
 
+//import "runtime"
+
 type Gotoh struct {
 	x   string
 	y   string
@@ -51,6 +53,7 @@ func (l Gotoh) ScoreArgs(x int, y int) (int, int) {
 }
 
 func (l *Gotoh) Length() {
+	//var r runtime.MemStats
 	var m = len(l.x)
 	var n = len(l.y)
 	l.h[1][0][0] = math.MinInt64
@@ -68,6 +71,8 @@ func (l *Gotoh) Length() {
 
 	for i := 1; i <= m; i++ {
 		for j := 1; j <= n; j++ {
+			//runtime.ReadMemStats(&r)
+			//fmt.Printf("%d,%d,%d,%d\n", r.HeapSys, r.HeapAlloc,r.HeapIdle, r.HeapReleased)
 			var nexth int
 			var nextphi int
 			//Update H^1 (l.h[0])

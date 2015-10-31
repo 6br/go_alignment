@@ -7,6 +7,9 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log"
+	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"regexp"
 	"strconv"
@@ -109,11 +112,17 @@ func readfile(i string) string {
 }
 
 func main() {
+	go func() {
+		log.Println(http.ListenAndServe("localhost:6060", nil))
+	}()
 	var config string
 	var interval int
+	var debug bool
 	flag.StringVar(&config, "c", "empty", "Write a pass of the config file including gap costs and a substitution matrix")
 	flag.StringVar(&config, "config", "empty", "Write a pass of the config file including gap costs and a substitution matrix")
 	flag.IntVar(&interval, "i", 50, "Write an interval of alignment result sequences (default: 50)")
+	flag.BoolVar(&debug, "d", false, "Set true if you want to examine memory usage")
+	flag.BoolVar(&debug, "debug", false, "Set true if you want to examine memory usage")
 	flag.Parse()
 	var ary string
 	var ary2 string
@@ -154,7 +163,13 @@ func main() {
 
 	lcs.Length() // Exec alignment
 	var lx, ly = lcs.Strlen()
+	if debug {
+		fmt.Scanln()
+	}
 	var p, q, r = lcs.Print(lx, ly)
+	if debug {
+		fmt.Scanln()
+	}
 	j := 0
 	fmt.Println("Score:", lcs.Score())
 	if interval >= 1 && interval < len(p) {
