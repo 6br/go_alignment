@@ -41,11 +41,6 @@ func (l LGotoh) Score() int {
 	return e
 }
 
-func (l LGotoh) ScoreArgs(x int, y int) (int, int) {
-	e, k := Max(l.h[0][x][y], l.h[1][x][y], l.h[2][x][y])
-	return e, k
-}
-
 func (l *LGotoh) Length() {
 	var m = len(l.x)
 	var n = len(l.y)
@@ -80,7 +75,18 @@ func (l *LGotoh) Length() {
 	}
 }
 
+func (l LGotoh) ScoreArgs(x int, y int) (int, int) {
+	e, k := Max(l.h[0][x][y], l.h[1][x][y], l.h[2][x][y])
+	fmt.Println(l.h[0][x][y], l.h[1][x][y], l.h[2][x][y])
+	return e, k
+}
+
 func (l LGotoh) Print(i int, j int) (string, string, string) {
+	_, arg := l.ScoreArgs(i, j)
+	return l.Print_iter(i, j, arg)
+}
+
+func (l LGotoh) Print_iter(i int, j int, arg int) (string, string, string) {
 	var p, q, r string
 	if i <= 0 && j <= 0 {
 		return "", "", ""
@@ -101,19 +107,19 @@ func (l LGotoh) Print(i int, j int) (string, string, string) {
 		}
 		return p, q, r
 	}
-	_, args := l.ScoreArgs(i, j)
-	if args == 0 {
-		p, q, r = l.Print(i-1, j-1)
+	_, arg = l.ScoreArgs(i, j)
+	if arg == 0 {
+		p, q, r = l.Print_iter(i-1, j-1, arg)
 		p += fmt.Sprintf("%c", l.x[i-1])
 		q += "|"
 		r += fmt.Sprintf("%c", l.y[j-1])
-	} else if args == 1 {
-		p, q, r = l.Print(i-1, j)
+	} else if arg == 1 {
+		p, q, r = l.Print_iter(i-1, j, arg)
 		p += fmt.Sprintf("%c", l.x[i-1])
 		q += " "
 		r += "-"
 	} else {
-		p, q, r = l.Print(i, j-1)
+		p, q, r = l.Print_iter(i, j-1, arg)
 		p += "-"
 		q += " "
 		r += fmt.Sprintf("%c", l.y[j-1])

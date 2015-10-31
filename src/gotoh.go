@@ -89,12 +89,11 @@ func (l *Gotoh) Length() {
 }
 
 func (l Gotoh) Print(i int, j int) (string, string, string) {
-	_, arg := Max(l.h[0][i][j], l.h[1][i][j], l.h[2][i][j])
-	//fmt.Println(l.h[0][i][j], l.h[1][i][j], l.h[2][i][j], arg)
+	_, arg := l.ScoreArgs(i, j)
 	return l.Print_iter(i, j, arg)
 }
 
-func (l Gotoh) Print_iter(i int, j int, args int) (string, string, string) {
+func (l Gotoh) Print_iter(i int, j int, arg int) (string, string, string) {
 	var p, q, r string
 	if i <= 0 && j <= 0 {
 		return "", "", ""
@@ -116,21 +115,21 @@ func (l Gotoh) Print_iter(i int, j int, args int) (string, string, string) {
 		return p, q, r
 	}
 
-	if args == 0 {
-		args = l.phi[args][i][j]
-		p, q, r = l.Print_iter(i-1, j-1, args)
+	if arg == 0 {
+		arg = l.phi[arg][i][j]
+		p, q, r = l.Print_iter(i-1, j-1, arg)
 		p += fmt.Sprintf("%c", l.x[i-1])
 		q += "|"
 		r += fmt.Sprintf("%c", l.y[j-1])
-	} else if args == 1 {
-		args = l.phi[args][i][j]
-		p, q, r = l.Print_iter(i-1, j, args)
+	} else if arg == 1 {
+		arg = l.phi[arg][i][j]
+		p, q, r = l.Print_iter(i-1, j, arg)
 		p += fmt.Sprintf("%c", l.x[i-1])
 		q += " "
 		r += "-"
 	} else {
-		args = l.phi[args][i][j]
-		p, q, r = l.Print_iter(i, j-1, args)
+		arg = l.phi[arg][i][j]
+		p, q, r = l.Print_iter(i, j-1, arg)
 		p += "-"
 		q += " "
 		r += fmt.Sprintf("%c", l.y[j-1])
