@@ -1,4 +1,4 @@
-go-NW/SW/LCS/NWG
+go-NW/SW/LCS/NWG/MEA
 ===
 [![Build Status](https://drone.io/github.com/6br/go_alignment/status.png)](https://drone.io/github.com/6br/go_alignment/latest)
 
@@ -27,6 +27,7 @@ flags(option):
 
 * -c || --config -> Write a configure file including gap scores and a substitution matrix.
 * -i -> Write an interval of alignment result sequences. (default: 50)
+* -d -> Set if you want to examine memory usage.(Access http://localhost:6060/debug/pprof/heap?debug=1)
 
 i.e. (config.txt)
 ```text
@@ -55,7 +56,9 @@ options :
 ## NOTION
 Now, you can align only composed by ATGC(or atgc).
 
-This repository doesn't obey to best practice of golang. I'm working on.
+I have recognized it has a lot of issue such as below.
+* This repository doesn't obey to best practice of golang.
+* Test's coverage is not 100%.
 
 ## Install
 Please git clone.

@@ -144,7 +144,9 @@ func main() {
 		ary = flag.Arg(1)
 		ary2 = flag.Arg(2)
 	}
-
+	if debug {
+		fmt.Scanln()
+	}
 	var lcs DPMatrix
 	switch flag.Arg(0) {
 	case "1":
