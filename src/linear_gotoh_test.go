@@ -12,7 +12,7 @@ func TestDescribe6(t *testing.T) {
 		charlist := "acgt"
 		var settings = NewConstants(2, 1, arr, charlist)
 		var lcs = NewLGotoh("ggatgcatgcatgc", "atgcatgcatgccc", *settings)
-		Context("and we calculate by Gotoh-algo", func() {
+		Context("and we calculate by LGotoh-algo", func() {
 			lcs.Length()
 			var lx, ly = lcs.Strlen()
 			var p, q, r = lcs.Print(lx, ly)

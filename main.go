@@ -103,15 +103,17 @@ func readfile(i string) string {
 		}
 		// 1行読み出す
 		line, _, err = reader.ReadLine()
-		ary += string(line)
+		ary += strings.ToLower(string(line))
 	}
 	return ary
 }
 
 func main() {
 	var config string
+	var interval int
 	flag.StringVar(&config, "c", "empty", "Write a pass of the config file including gap costs and a substitution matrix")
 	flag.StringVar(&config, "config", "empty", "Write a pass of the config file including gap costs and a substitution matrix")
+	flag.IntVar(&interval, "i", 50, "Write an interval of alignment result sequences (default: 50)")
 	flag.Parse()
 	var ary string
 	var ary2 string
@@ -155,7 +157,7 @@ func main() {
 	var p, q, r = lcs.Print(lx, ly)
 	j := 0
 	fmt.Println("Score:", lcs.Score())
-	for i := 50; i < len(p)+50; i += 50 {
+	for i := interval - 1; i < len(p)+interval; i += interval {
 		if i > len(p) {
 			i = len(p)
 		}

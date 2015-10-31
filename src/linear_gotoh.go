@@ -77,7 +77,6 @@ func (l *LGotoh) Length() {
 
 func (l LGotoh) ScoreArgs(x int, y int) (int, int) {
 	e, k := Max(l.h[0][x][y], l.h[1][x][y], l.h[2][x][y])
-	fmt.Println(l.h[0][x][y], l.h[1][x][y], l.h[2][x][y])
 	return e, k
 }
 
@@ -107,18 +106,21 @@ func (l LGotoh) Print_iter(i int, j int, arg int) (string, string, string) {
 		}
 		return p, q, r
 	}
-	_, arg = l.ScoreArgs(i, j)
+	e, d := l.Geted()
 	if arg == 0 {
+		_, arg = l.ScoreArgs(i-1, j-1)
 		p, q, r = l.Print_iter(i-1, j-1, arg)
 		p += fmt.Sprintf("%c", l.x[i-1])
 		q += "|"
 		r += fmt.Sprintf("%c", l.y[j-1])
 	} else if arg == 1 {
+		_, arg = Max(l.h[0][i-1][j]-d, l.h[1][i-1][j]-e, l.h[2][i-1][j]-d)
 		p, q, r = l.Print_iter(i-1, j, arg)
 		p += fmt.Sprintf("%c", l.x[i-1])
 		q += " "
 		r += "-"
 	} else {
+		_, arg = Max(l.h[0][i][j-1]-d, math.MinInt64, l.h[2][i][j-1]-e)
 		p, q, r = l.Print_iter(i, j-1, arg)
 		p += "-"
 		q += " "
