@@ -7,6 +7,9 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log"
+	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"regexp"
 	"strconv"
@@ -38,6 +41,7 @@ func readfasta(i string) (string, string) {
 			j++
 			ary[j] = ""
 		} else {
+			//遅い
 			ary[j] += strings.ToLower(string(line))
 		}
 	}
@@ -103,15 +107,24 @@ func readfile(i string) string {
 		}
 		// 1行読み出す
 		line, _, err = reader.ReadLine()
-		ary += string(line)
+		//遅い
+		ary += strings.ToLower(string(line))
 	}
 	return ary
 }
 
 func main() {
+	go func() {
+		log.Println(http.ListenAndServe("localhost:6060", nil))
+	}()
 	var config string
+	var interval int
+	var debug bool
 	flag.StringVar(&config, "c", "empty", "Write a pass of the config file including gap costs and a substitution matrix")
 	flag.StringVar(&config, "config", "empty", "Write a pass of the config file including gap costs and a substitution matrix")
+	flag.IntVar(&interval, "i", 50, "Write an interval of alignment result sequences (default: 50)")
+	flag.BoolVar(&debug, "d", false, "Set true if you want to examine memory usage")
+	flag.BoolVar(&debug, "debug", false, "Set true if you want to examine memory usage")
 	flag.Parse()
 	var ary string
 	var ary2 string
@@ -133,7 +146,9 @@ func main() {
 		ary = flag.Arg(1)
 		ary2 = flag.Arg(2)
 	}
-
+	if debug {
+		fmt.Scanln()
+	}
 	var lcs DPMatrix
 	switch flag.Arg(0) {
 	case "1":
@@ -144,23 +159,37 @@ func main() {
 		lcs = NewGotoh(ary, ary2, settings)
 	case "4":
 		lcs = NewMEA(ary, ary2, settings)
+	case "5":
+		lcs = NewLGotoh(ary, ary2, settings)
 	default:
 		lcs = NewNW(ary, ary2)
 	}
 
 	lcs.Length() // Exec alignment
 	var lx, ly = lcs.Strlen()
+	if debug {
+		fmt.Scanln()
+	}
 	var p, q, r = lcs.Print(lx, ly)
+	if debug {
+		fmt.Scanln()
+	}
 	j := 0
 	fmt.Println("Score:", lcs.Score())
-	for i := 50; i < len(p)+50; i += 50 {
-		if i > len(p) {
-			i = len(p)
+	if interval >= 1 && interval < len(p) {
+		for i := interval - 1; i < len(p)+interval; i += interval {
+			if i > len(p) {
+				i = len(p)
+			}
+			fmt.Println("from", j, "to", i)
+			fmt.Println(r[j:i])
+			fmt.Println(q[j:i])
+			fmt.Println(p[j:i])
+			j = i + 1
 		}
-		fmt.Println("from", j, "to", i)
-		fmt.Println(r[j:i])
-		fmt.Println(q[j:i])
-		fmt.Println(p[j:i])
-		j = i + 1
+	} else {
+		fmt.Println(r)
+		fmt.Println(q)
+		fmt.Println(p)
 	}
 }
