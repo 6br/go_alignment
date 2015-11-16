@@ -99,8 +99,8 @@ func (l LGotoh) Print_iter(i int, j int, arg int) (string, string, string) {
 		return p, q, r
 	} else if j <= 0 {
 		//p,q,r = l.Print(i-1,j)
-		for ; i > 0; i-- {
-			p += fmt.Sprintf("%c", l.x[i-1])
+		for it := 0; it < i; it++ {
+			p += fmt.Sprintf("%c", l.x[it])
 			q += " "
 			r += "-"
 		}
