@@ -168,6 +168,7 @@ func main() {
 	}
 
 	lcs.Length() // Exec alignment
+	score := lcs.Score()
 	var lx, ly = lcs.Strlen()
 	if debug {
 		fmt.Scanln()
@@ -177,7 +178,7 @@ func main() {
 		fmt.Scanln()
 	}
 	j := 0
-	fmt.Println("Score:", lcs.Score())
+	fmt.Println("Score:", score)
 	if interval >= 1 && interval < len(p) {
 		for i := interval - 1; i < len(p)+interval; i += interval {
 			if i > len(p) {

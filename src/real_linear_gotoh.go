@@ -36,7 +36,7 @@ func (l Rgotoh) Substitution(x int, y int) int {
 }
 
 func (l Rgotoh) Score() int {
-	e, _ := l.ScoreArgs(len(l.x), len(l.y))
+	e, _ := l.ScoreArgs(len(l.x))
 	return e
 }
 
@@ -125,120 +125,75 @@ func (l *Rgotoh) RegionAlign(i1 int, i2 int, j1 int, j2 int) (result int, class 
 		l.h[2][0][0] = l.Cost(j)
 	}
 
-	e, k := Max(l.h[0][m][0], l.h[1][m][0], l.h[2][m][0])
-	return e, k
+	//e, k := Max(l.h[0][m][0], l.h[1][m][0], l.h[2][m][0])
+	return l.ScoreArgs(m)
 }
 
-func (l Rgotoh) ScoreArgs(x int, y int) (int, int) {
-	e, k := Max(l.h[0][x][0], l.h[1][x][0], l.h[2][x][0])
-	return e, k
+func (l Rgotoh) ScoreArgs(x int) (e int, k int) {
+	e, k = Max(l.h[0][x][0], l.h[1][x][0], l.h[2][x][0])
+	return
 }
 
 func (l Rgotoh) Print(i int, j int) (string, string, string) {
-	//_, arg := l.ScoreArgs(i, j)
-	fmt.Println(l.Score())
 	//fmt.Println(l.LinearSpaceAlign(120, 120, 120, 120))
-	fmt.Println(l.RegionAlign(120, 120, 120, 120))
-	return l.LinearSpace(i-1, j-1, l.Score()) //Print_iter(i, j, arg)
+	//fmt.Println(l.RegionAlign(0, len(l.x), 0, len(l.y)))
+	return l.LinearSpace(i-1, j-1, l.Score())
 }
 
 func (l Rgotoh) LinearSpace(i int, j int, score int) (p string, q string, r string) {
-	fmt.Println(i, j, "called")
 	if (i < 0 && j == 0) || (j < 0 && i == 0) {
-		return "", "", ""
+		return
 	} else if i < 0 {
-		//p,q,r = l.Print(i,j-1)
-		for ; j >= 0; j-- {
+		for jt := 0; jt <= j; jt++ {
 			p += "-"
 			q += " "
-			r += fmt.Sprintf("%c", l.y[j])
+			r += fmt.Sprintf("%c", l.y[jt])
 		}
-		return p, q, r
+		return
 	} else if j < 0 {
-		//p,q,r = l.Print(i-1,j)
-		for ; i >= 0; i-- {
-			p += fmt.Sprintf("%c", l.x[i])
+		for it := 0; it <= i; it++ {
+			p += fmt.Sprintf("%c", l.x[it])
 			q += " "
 			r += "-"
 		}
-		return p, q, r
+		return
 	}
-	maxj := j + 1
+	maxj := j + 1 //To use determine whethere i have a suitable solution.
 	for jh := 0; jh <= j; jh++ {
 		tmp1, err1 := l.RegionAlign(0, i, 0, jh)
 		tmp2, err2 := l.RegionAlign(i, len(l.x), jh, len(l.y))
-		fmt.Println(tmp1, err1, tmp2, err2, i, jh)
 		tmp := tmp1 + tmp2
 		_, d := l.Geted()
 		if err1 >= 1 && err2 >= 1 {
 			tmp += d
 		}
-		//fmt.Println(i, jh, tmp)
 		if tmp == score {
 			maxj = jh
 		}
 	}
-	fmt.Println(i, j, maxj, "result")
+	//fmt.Println(i, j, maxj, "result")
 	p, q, r = l.LinearSpace(i-1, maxj-1, score)
 	if maxj == j+1 {
 		//iに適解が見つからなかった時
 		p += fmt.Sprintf("%c", l.x[i])
 		q += " "
 		r += "-"
-		return
 	} else if maxj < j {
-		fmt.Println(i, maxj, j, "else")
+		//jに適解が見つからなかった時
 		p += fmt.Sprintf("%c", l.x[i])
 		q += "|"
 		r += fmt.Sprintf("%c", l.y[maxj])
-
 		for maxj++; maxj <= j; maxj++ {
-			fmt.Println(maxj)
 			p += "-"
 			q += " "
 			r += fmt.Sprintf("%c", l.y[maxj])
 		}
-
-		return
 	} else {
 		p += fmt.Sprintf("%c", l.x[i])
 		q += "|"
 		r += fmt.Sprintf("%c", l.y[j])
-		return
 	}
-
-	if j == maxj {
-		fmt.Println(i, j)
-		p += fmt.Sprintf("%c", l.x[i])
-		q += "|"
-		r += fmt.Sprintf("%c", l.y[j])
-		return
-	} else if maxj == j+1 {
-		fmt.Println(i, j, maxj, "bad")
-		p += fmt.Sprintf("%c", l.x[i])
-		q += "|"
-		r += fmt.Sprintf("%c", l.y[j])
-		return
-	} else if j == maxj {
-		fmt.Println(i, j, maxj, "bad")
-		p += fmt.Sprintf("%c", l.x[i])
-		q += " "
-		r += "-"
-		return
-	} else {
-		fmt.Println(i, maxj, j, "else")
-
-		for ; maxj < j; maxj++ {
-			fmt.Println(maxj)
-			p += "-"
-			q += " "
-			r += fmt.Sprintf("%c", l.y[maxj])
-		}
-		p += fmt.Sprintf("%c", l.x[i])
-		q += "|"
-		r += fmt.Sprintf("%c", l.y[j])
-		return p, q, r
-	}
+	return
 }
 
 func (l Rgotoh) LinearSpaceAlign(i1 int, i2 int, j1 int, j2 int) (p string, q string, r string) {
