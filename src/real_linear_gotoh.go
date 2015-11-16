@@ -143,27 +143,28 @@ func (l Rgotoh) Print(i int, j int) (string, string, string) {
 }
 
 func (l Rgotoh) LinearSpace(i int, j int, score int) (p string, q string, r string) {
-	if i <= 0 && j <= 0 {
+	fmt.Println(i, j, "called")
+	if (i < 0 && j == 0) || (j < 0 && i == 0) {
 		return "", "", ""
-	} else if i <= 0 {
+	} else if i < 0 {
 		//p,q,r = l.Print(i,j-1)
-		for ; j > 0; j-- {
+		for ; j >= 0; j-- {
 			p += "-"
 			q += " "
 			r += fmt.Sprintf("%c", l.y[j])
 		}
 		return p, q, r
-	} else if j <= 0 {
+	} else if j < 0 {
 		//p,q,r = l.Print(i-1,j)
-		for ; i > 0; i-- {
+		for ; i >= 0; i-- {
 			p += fmt.Sprintf("%c", l.x[i])
 			q += " "
 			r += "-"
 		}
 		return p, q, r
 	}
-	maxj := j
-	for jh := 1; jh <= j; jh++ {
+	maxj := j + 1
+	for jh := 0; jh <= j; jh++ {
 		tmp1, err1 := l.RegionAlign(0, i, 0, jh)
 		tmp2, err2 := l.RegionAlign(i, len(l.x), jh, len(l.y))
 		fmt.Println(tmp1, err1, tmp2, err2, i, jh)
@@ -178,22 +179,56 @@ func (l Rgotoh) LinearSpace(i int, j int, score int) (p string, q string, r stri
 		}
 	}
 	fmt.Println(i, j, maxj, "result")
-	p, q, r = l.LinearSpace(i-1, maxj, score)
-	if j == maxj {
-		fmt.Println(i, j, "bad")
+	p, q, r = l.LinearSpace(i-1, maxj-1, score)
+	if maxj == j+1 {
+		//iに適解が見つからなかった時
 		p += fmt.Sprintf("%c", l.x[i])
 		q += " "
 		r += "-"
 		return
-	} else if j-1 == maxj {
+	} else if maxj < j {
+		fmt.Println(i, maxj, j, "else")
+		p += fmt.Sprintf("%c", l.x[i])
+		q += "|"
+		r += fmt.Sprintf("%c", l.y[maxj])
+
+		for maxj++; maxj <= j; maxj++ {
+			fmt.Println(maxj)
+			p += "-"
+			q += " "
+			r += fmt.Sprintf("%c", l.y[maxj])
+		}
+
+		return
+	} else {
+		p += fmt.Sprintf("%c", l.x[i])
+		q += "|"
+		r += fmt.Sprintf("%c", l.y[j])
+		return
+	}
+
+	if j == maxj {
 		fmt.Println(i, j)
 		p += fmt.Sprintf("%c", l.x[i])
 		q += "|"
 		r += fmt.Sprintf("%c", l.y[j])
 		return
+	} else if maxj == j+1 {
+		fmt.Println(i, j, maxj, "bad")
+		p += fmt.Sprintf("%c", l.x[i])
+		q += "|"
+		r += fmt.Sprintf("%c", l.y[j])
+		return
+	} else if j == maxj {
+		fmt.Println(i, j, maxj, "bad")
+		p += fmt.Sprintf("%c", l.x[i])
+		q += " "
+		r += "-"
+		return
 	} else {
-		fmt.Println(i, maxj, j)
-		for maxj++; maxj < j; maxj++ {
+		fmt.Println(i, maxj, j, "else")
+
+		for ; maxj < j; maxj++ {
 			fmt.Println(maxj)
 			p += "-"
 			q += " "
