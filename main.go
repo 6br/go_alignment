@@ -161,6 +161,8 @@ func main() {
 		lcs = NewMEA(ary, ary2, settings)
 	case "5":
 		lcs = NewLGotoh(ary, ary2, settings)
+	case "6":
+		lcs = NewRGotoh(ary, ary2, settings)
 	default:
 		lcs = NewNW(ary, ary2)
 	}
