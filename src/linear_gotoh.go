@@ -37,6 +37,7 @@ func (l LGotoh) Substitution(x int, y int) int {
 }
 
 func (l LGotoh) Score() int {
+	l.Length()
 	e, _ := l.ScoreArgs(len(l.x), len(l.y))
 	return e
 }

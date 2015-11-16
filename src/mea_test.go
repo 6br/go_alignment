@@ -11,7 +11,7 @@ func TestDescribe5(t *testing.T) {
 		arr := [][]int{{1, 2, 3}, {7, 5, 6}, {4, 8, 9}}
 		charlist := "acgt"
 		var matrix = NewConstants(2, 1, arr, charlist)
-		var lcs DPMatrix = NewMEA("gcg", "atg", *matrix) //stringのGoにおける実装上、半角英数でなければならない。
+		var lcs DPMatrix = NewMEA("gcg", "atg", *matrix)
 		Context("and we calculate MEA", func() {
 			lcs.Length()
 			var lx, ly = lcs.Strlen()

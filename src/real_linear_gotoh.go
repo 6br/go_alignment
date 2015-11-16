@@ -41,46 +41,7 @@ func (l Rgotoh) Score() int {
 }
 
 func (l *Rgotoh) Length() {
-	var m = len(l.x)
-	var n = len(l.y)
-	l.h[0][0][0] = 0
-	l.h[1][0][0] = math.MinInt64
-	l.h[2][0][0] = math.MinInt64
-	for i := 1; i <= m; i++ {
-		l.h[0][i][0] = math.MinInt32
-		l.h[1][i][0] = l.Cost(i)
-		l.h[2][i][0] = math.MinInt32
-	}
-	for j := 1; j <= 1; j++ {
-		l.h[0][0][j] = math.MinInt32
-		l.h[1][0][j] = math.MinInt32
-		l.h[2][0][j] = l.Cost(j)
-	}
-
-	for j := 1; j <= n; j++ {
-		for i := 1; i <= m; i++ {
-			var nexth int
-			//Update H^1 (l.h[0])
-			nexth, _ = Max(l.h[0][i-1][0], l.h[1][i-1][0], l.h[2][i-1][0])
-			//fmt.Println(i,j)
-			l.h[0][i][1] = nexth + l.Substitution(i, j)
-			//Update H^2 (l.h[1])
-			e, d := l.Geted()
-			nexth, _ = Max(l.h[0][i-1][1]-d, l.h[1][i-1][1]-e, l.h[2][i-1][1]-d)
-			l.h[1][i][1] = nexth
-			//Update H^3 (l.h[2])
-			nexth, _ = Max(l.h[0][i][0]-d, math.MinInt64, l.h[2][i][0]-e)
-			l.h[2][i][1] = nexth
-		}
-		for i := 1; i <= m; i++ {
-			l.h[0][i][0] = l.h[0][i][1]
-			l.h[1][i][0] = l.h[1][i][1]
-			l.h[2][i][0] = l.h[2][i][1]
-		}
-		l.h[0][0][0] = math.MinInt32
-		l.h[1][0][0] = math.MinInt32
-		l.h[2][0][0] = l.Cost(j)
-	}
+	l.RegionAlign(0, len(l.x), 0, len(l.y))
 }
 
 func (l *Rgotoh) RegionAlign(i1 int, i2 int, j1 int, j2 int) (result int, class int) {
@@ -125,7 +86,6 @@ func (l *Rgotoh) RegionAlign(i1 int, i2 int, j1 int, j2 int) (result int, class 
 		l.h[2][0][0] = l.Cost(j)
 	}
 
-	//e, k := Max(l.h[0][m][0], l.h[1][m][0], l.h[2][m][0])
 	return l.ScoreArgs(m)
 }
 
@@ -174,12 +134,12 @@ func (l Rgotoh) LinearSpace(i int, j int, score int) (p string, q string, r stri
 	//fmt.Println(i, j, maxj, "result")
 	p, q, r = l.LinearSpace(i-1, maxj-1, score)
 	if maxj == j+1 {
-		//iに適解が見つからなかった時
+		//When no suitable solution is not found for i.
 		p += fmt.Sprintf("%c", l.x[i])
 		q += " "
 		r += "-"
 	} else if maxj < j {
-		//jに適解が見つからなかった時
+		//When no suitable solution is not found for j.
 		p += fmt.Sprintf("%c", l.x[i])
 		q += "|"
 		r += fmt.Sprintf("%c", l.y[maxj])
@@ -196,7 +156,8 @@ func (l Rgotoh) LinearSpace(i int, j int, score int) (p string, q string, r stri
 	return
 }
 
-func (l Rgotoh) LinearSpaceAlign(i1 int, i2 int, j1 int, j2 int) (p string, q string, r string) {
+//linearSpaceAlign is not used.
+func (l Rgotoh) linearSpaceAlign(i1 int, i2 int, j1 int, j2 int) (p string, q string, r string) {
 	i := i2 - i1
 	j := j2 - j1
 	fmt.Println(i1, i2, j1, j2, i, j, "hantei")
@@ -245,31 +206,13 @@ func (l Rgotoh) LinearSpaceAlign(i1 int, i2 int, j1 int, j2 int) (p string, q st
 		}
 	}
 	fmt.Println(i1, ih, i2, j1, maxj, j2)
-	p, q, r = l.LinearSpaceAlign(i1, ih, j1, maxj)
+	p, q, r = l.linearSpaceAlign(i1, ih, j1, maxj)
 	p += fmt.Sprintf("%c", l.x[ih])
 	q += "!"
 	r += fmt.Sprintf("%c", l.y[maxj])
-	p2, q2, r2 := l.LinearSpaceAlign(ih, i2, maxj, j2)
+	p2, q2, r2 := l.linearSpaceAlign(ih, i2, maxj, j2)
 	p += p2
 	q += q2
 	r += r2
 	return
 }
-
-/*
-func main() {
-	arr := [][]int{{1, -1, -1, -1}, {-1, 1, -1, -1}, {-1, -1, 1, -1}, {-1, -1, -1, 1}}
-	charlist := "acgt"
-	var settings = NewConstants(2, 1, arr, charlist)
-	var lcs = NewRgotoh("ggatgcatgcatgc", "atgcatgcatgccc", *settings)
-	lcs.Length()
-	fmt.Println(lcs.h)
-	fmt.Println(lcs.Score())
-	fmt.Println(lcs.h[0][8][8])
-	var lx, ly = lcs.Strlen()
-	var p, q, r = lcs.Print(lx, ly)
-	fmt.Println(p)
-	fmt.Println(q)
-	fmt.Println(r)
-}
-*/
