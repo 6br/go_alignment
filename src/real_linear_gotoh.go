@@ -35,16 +35,20 @@ func (l Rgotoh) Substitution(x int, y int) int {
 	return l.Constants.Substitution(l.x[x-1], l.y[y-1])
 }
 
+func (l Rgotoh) ReverseSubstitution(x int, y int, xend int, yend int) int {
+	return l.Constants.Substitution(l.x[xend-x], l.y[yend-y])
+}
+
 func (l Rgotoh) Score() int {
 	e, _ := l.ScoreArgs(len(l.x))
 	return e
 }
 
 func (l *Rgotoh) Length() {
-	l.RegionAlign(0, len(l.x), 0, len(l.y))
+	l.RegionAlign(0, len(l.x), 0, len(l.y), true)
 }
 
-func (l *Rgotoh) RegionAlign(i1 int, i2 int, j1 int, j2 int) (result int, class int) {
+func (l *Rgotoh) RegionAlign(i1 int, i2 int, j1 int, j2 int, order bool) (result int, class int) {
 	var m = i2 - i1
 	var n = j2 - j1
 	l.h[0][0][0] = 0
@@ -65,7 +69,11 @@ func (l *Rgotoh) RegionAlign(i1 int, i2 int, j1 int, j2 int) (result int, class 
 			//Update H^1 (l.h[0])
 			nexth, _ = Max(l.h[0][i-1][0], l.h[1][i-1][0], l.h[2][i-1][0])
 			//fmt.Println(i, j)
-			l.h[0][i][1] = nexth + l.Substitution(i+i1, j+j1)
+			if order {
+				l.h[0][i][1] = nexth + l.Substitution(i+i1, j+j1)
+			} else {
+				l.h[0][i][1] = nexth + l.Substitution(i2-i+1, j2-j+1)
+			}
 			//Update H^2 (l.h[1])
 			e, d := l.Geted()
 			nexth, _ = Max(l.h[0][i-1][1]-d, l.h[1][i-1][1]-e, l.h[2][i-1][1]-d)
@@ -90,8 +98,12 @@ func (l Rgotoh) ScoreArgs(x int) (e int, k int) {
 
 func (l Rgotoh) Print(i int, j int) (string, string, string) {
 	//fmt.Println(l.LinearSpaceAlign(120, 120, 120, 120))
-	//fmt.Println(l.RegionAlign(0, len(l.x), 0, len(l.y)))
+	//fmt.Println(l.RegionAlign(7, len(l.x), 0, len(l.y), false))
+	//fmt.Println(l.RegionAlign(7, len(l.x), 0, len(l.y), true))
+	//fmt.Println(l.RegionAlign(0, 7, 0, 0, false))
+	//fmt.Println(l.RegionAlign(0, 7, 0, 0, true))
 	return l.LinearSpace(0, 0, i-1, j-1, l.Score())
+	//return l.linearSpaceAlign(0, len(l.x), 0, len(l.y))
 }
 
 func (l Rgotoh) LinearSpace(i0 int, j0 int, i int, j int, score int) (p string, q string, r string) {
@@ -113,17 +125,18 @@ func (l Rgotoh) LinearSpace(i0 int, j0 int, i int, j int, score int) (p string, 
 		return
 	}
 	maxj := j + 1 //To use determine whethere i have a suitable solution.
-	for jh := 0; jh <= j; jh++ {
-		tmp1, err1 := l.RegionAlign(0, i, 0, jh)
-		tmp2, err2 := l.RegionAlign(i, len(l.x), jh, len(l.y))
+	for jh := j; jh >= 0; jh-- {
+		tmp1, err1 := l.RegionAlign(0, i, 0, jh, true)
+		tmp2, err2 := l.RegionAlign(i, len(l.x), jh, len(l.y), false)
 		tmp := tmp1 + tmp2
 		_, d := l.Geted()
-		if err1 >= 1 && err2 >= 1 {
+		if err1 == err2 && err2 >= 1 {
 			tmp += d
 		}
 		fmt.Println(tmp1, tmp2, err1, err2, tmp, jh)
 		if tmp == score {
 			maxj = jh
+			break
 		}
 	}
 	fmt.Println(i, j, maxj, "result")
@@ -186,13 +199,13 @@ func (l Rgotoh) linearSpaceAlign(i1 int, i2 int, j1 int, j2 int) (p string, q st
 	}
 	maxscore, maxj := math.MinInt64, j1+1
 	for jh := j1 + 1; jh < j2; jh++ {
-		tmp1, err1 := l.RegionAlign(i1, ih, j1, jh)
-		tmp2, err2 := l.RegionAlign(ih, i2, jh, j2)
+		tmp1, err1 := l.RegionAlign(i1, ih, j1, jh, true)
+		tmp2, err2 := l.RegionAlign(ih, i2, jh, j2, false)
 		fmt.Println(tmp1, tmp2)
 		tmp := tmp1 + tmp2
 		_, d := l.Geted()
 		if err1 >= 1 && err2 >= 1 {
-			tmp -= d
+			tmp += d
 		}
 		fmt.Println(i1, i2, j1, j2, ih, jh, tmp)
 		if tmp > maxscore {

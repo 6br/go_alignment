@@ -45,7 +45,8 @@ int :
 * 2 -> SW
 * 3 -> Gotoh
 * 4 -> MEA
-* 5 -> Linear-Memory Gotoh
+* 5 -> Pseudo Linear-Memory Gotoh(For debug)
+* 6 -> Real Linear-Memory Gotoh
 
 options :
 

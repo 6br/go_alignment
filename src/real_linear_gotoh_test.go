@@ -10,7 +10,7 @@ func TestDescribe7(t *testing.T) {
 	Describe(t, "We have the other strings", func() {
 		arr := [][]int{{1, -1, -1, -1}, {-1, 1, -1, -1}, {-1, -1, 1, -1}, {-1, -1, -1, 1}}
 		charlist := "acgt"
-		var settings = NewConstants(7, 1, arr, charlist)
+		var settings = NewConstants(2, 1, arr, charlist)
 		var lcs = NewRGotoh("ggatgcatgca", "atgcatgcatg", *settings)
 		Context("and we calculate by RealLGotoh-algo", func() {
 			lcs.Length()
@@ -28,7 +28,7 @@ func TestDescribe7(t *testing.T) {
 			It("should be the correct score", func() {
 				lcs.Length()
 				var s = lcs.Score()
-				Expect(s).To(Equal, -7)
+				Expect(s).To(Equal, 3)
 			})
 		})
 	})
