@@ -7,9 +7,10 @@ import "fmt"
 import "math"
 
 type Rgotoh struct {
-	x string
-	y string
-	h [][][]int
+	x     string
+	y     string
+	h     [][][]int
+	vague bool
 	Constants
 }
 
@@ -98,7 +99,11 @@ func (l Rgotoh) Print(i int, j int) (string, string, string) {
 	//fmt.Println(l.RegionAlign(7, len(l.x), 0, len(l.y), true))
 	//fmt.Println(l.RegionAlign(0, 7, 0, 0, false))
 	//fmt.Println(l.RegionAlign(0, 7, 0, 0, true))
+	if len(l.x) > 100 {
+		l.vague = true
+	}
 	return l.LinearSpace(0, 0, i-1, j-1, l.Score())
+	//return l.LinearBinaryAlign(0, i-1, 0, j-1, l.Score())
 	//return l.linearSpaceAlign(0, len(l.x), 0, len(l.y))
 }
 
@@ -112,7 +117,7 @@ func (l Rgotoh) LinearSpace(i0 int, j0 int, i int, j int, score int) (p string, 
 			r += fmt.Sprintf("%c", l.y[jt])
 		}
 		return
-	} else if j < i0 {
+	} else if j < j0 {
 		for it := i0; it <= i; it++ {
 			p += fmt.Sprintf("%c", l.x[it])
 			q += " "
@@ -121,7 +126,11 @@ func (l Rgotoh) LinearSpace(i0 int, j0 int, i int, j int, score int) (p string, 
 		return
 	}
 	maxj := j + 1 //To use determine whethere i have a suitable solution.
-	for jh := j; jh >= 0; jh-- {
+	min := 0
+	if l.vague {
+		min = j - 70
+	}
+	for jh := j; jh >= min; jh-- {
 		tmp1, err1 := l.RegionAlign(0, i, 0, jh, true)
 		tmp2, err2 := l.RegionAlign(i, len(l.x), jh, len(l.y), false)
 		tmp := tmp1 + tmp2
@@ -153,10 +162,48 @@ func (l Rgotoh) LinearSpace(i0 int, j0 int, i int, j int, score int) (p string, 
 			r += fmt.Sprintf("%c", l.y[maxj])
 		}
 	} else {
+		//fmt.Println(i)
 		p += fmt.Sprintf("%c", l.x[i])
 		q += "|"
 		r += fmt.Sprintf("%c", l.y[j])
 	}
+	return
+}
+
+func (l Rgotoh) LinearBinaryAlign(i1 int, i2 int, j1 int, j2 int, score int) (p string, q string, r string) {
+	if i2-i1 <= 100 || j2-j1 <= 100 {
+		//fmt.Println(i1, j1, i2, j2, "delegate")
+		return l.LinearSpace(i1, j1, i2, j2, score)
+	}
+	ih := ((i1 + i2) / 2)
+	if ih >= len(l.x) || ih < i1 {
+		panic(i1 + i2)
+	}
+	maxscore, maxj := -1000, j1+1
+	for jh := j2; jh >= j1; jh-- {
+		tmp1, err1 := l.RegionAlign(i1, ih, j1, jh, true)
+		tmp2, err2 := l.RegionAlign(ih, i2, jh, j2, false)
+		//fmt.Println(tmp1, tmp2)
+		tmp := tmp1 + tmp2
+		_, d := l.Geted()
+		if err1 >= 1 && err2 >= 1 {
+			tmp += d
+		}
+		//fmt.Println(i1, i2, j1, j2, ih, jh, tmp)
+		if tmp > maxscore {
+			maxscore = tmp
+			maxj = jh
+		}
+	}
+	fmt.Println(i1, ih, i2, j1, maxj, j2)
+	p, q, r = l.LinearBinaryAlign(i1, ih-1, j1, maxj-1, score)
+	//p += fmt.Sprintf("%c", l.x[ih])
+	//q += "|"
+	//r += fmt.Sprintf("%c", l.y[maxj])
+	p2, q2, r2 := l.LinearBinaryAlign(ih, i2, maxj, j2, score)
+	p += p2
+	q += q2
+	r += r2
 	return
 }
 
