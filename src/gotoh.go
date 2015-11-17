@@ -104,16 +104,16 @@ func (l Gotoh) Print_iter(i int, j int, arg int) (string, string, string) {
 		return "", "", ""
 	} else if i <= 0 {
 		//p,q,r = l.Print(i,j-1)
-		for ; j > 0; j-- {
+		for jt := 0; jt < j; jt++ {
 			p += "-"
 			q += " "
-			r += fmt.Sprintf("%c", l.y[j-1])
+			r += fmt.Sprintf("%c", l.y[jt])
 		}
 		return p, q, r
 	} else if j <= 0 {
 		//p,q,r = l.Print(i-1,j)
-		for ; i > 0; i-- {
-			p += fmt.Sprintf("%c", l.x[i-1])
+		for it := 0; it < i; it++ {
+			p += fmt.Sprintf("%c", l.x[it])
 			q += " "
 			r += "-"
 		}

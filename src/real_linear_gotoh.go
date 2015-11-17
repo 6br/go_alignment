@@ -35,10 +35,6 @@ func (l Rgotoh) Substitution(x int, y int) int {
 	return l.Constants.Substitution(l.x[x-1], l.y[y-1])
 }
 
-func (l Rgotoh) ReverseSubstitution(x int, y int, xend int, yend int) int {
-	return l.Constants.Substitution(l.x[xend-x], l.y[yend-y])
-}
-
 func (l Rgotoh) Score() int {
 	e, _ := l.ScoreArgs(len(l.x))
 	return e
@@ -117,7 +113,7 @@ func (l Rgotoh) LinearSpace(i0 int, j0 int, i int, j int, score int) (p string, 
 		}
 		return
 	} else if j < i0 {
-		for it := j0; it <= i; it++ {
+		for it := i0; it <= i; it++ {
 			p += fmt.Sprintf("%c", l.x[it])
 			q += " "
 			r += "-"
@@ -133,13 +129,13 @@ func (l Rgotoh) LinearSpace(i0 int, j0 int, i int, j int, score int) (p string, 
 		if err1 == err2 && err2 >= 1 {
 			tmp += d
 		}
-		fmt.Println(tmp1, tmp2, err1, err2, tmp, jh)
+		//fmt.Println(tmp1, tmp2, err1, err2, tmp, jh)
 		if tmp == score {
 			maxj = jh
 			break
 		}
 	}
-	fmt.Println(i, j, maxj, "result")
+	//fmt.Println(i, j, maxj, "result")
 	p, q, r = l.LinearSpace(i0, j0, i-1, maxj-1, score)
 	if maxj == j+1 {
 		//When no suitable solution is not found for i.
