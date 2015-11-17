@@ -55,13 +55,11 @@ func (l *Rgotoh) RegionAlign(i1 int, i2 int, j1 int, j2 int) (result int, class 
 		l.h[1][i][0] = l.Cost(i)
 		l.h[2][i][0] = math.MinInt32
 	}
-	for j := 1; j <= 1; j++ {
-		l.h[0][0][j] = math.MinInt32
-		l.h[1][0][j] = math.MinInt32
-		l.h[2][0][j] = l.Cost(j)
-	}
 
 	for j := 1; j <= n; j++ {
+		l.h[0][0][1] = math.MinInt32
+		l.h[1][0][1] = math.MinInt32
+		l.h[2][0][1] = l.Cost(j)
 		for i := 1; i <= m; i++ {
 			var nexth int
 			//Update H^1 (l.h[0])
@@ -76,16 +74,12 @@ func (l *Rgotoh) RegionAlign(i1 int, i2 int, j1 int, j2 int) (result int, class 
 			nexth, _ = Max(l.h[0][i][0]-d, math.MinInt64, l.h[2][i][0]-e)
 			l.h[2][i][1] = nexth
 		}
-		for i := 1; i <= m; i++ {
+		for i := 0; i <= m; i++ {
 			l.h[0][i][0] = l.h[0][i][1]
 			l.h[1][i][0] = l.h[1][i][1]
 			l.h[2][i][0] = l.h[2][i][1]
 		}
-		l.h[0][0][0] = math.MinInt32
-		l.h[1][0][0] = math.MinInt32
-		l.h[2][0][0] = l.Cost(j)
 	}
-
 	return l.ScoreArgs(m)
 }
 
@@ -97,21 +91,21 @@ func (l Rgotoh) ScoreArgs(x int) (e int, k int) {
 func (l Rgotoh) Print(i int, j int) (string, string, string) {
 	//fmt.Println(l.LinearSpaceAlign(120, 120, 120, 120))
 	//fmt.Println(l.RegionAlign(0, len(l.x), 0, len(l.y)))
-	return l.LinearSpace(i-1, j-1, l.Score())
+	return l.LinearSpace(0, 0, i-1, j-1, l.Score())
 }
 
-func (l Rgotoh) LinearSpace(i int, j int, score int) (p string, q string, r string) {
-	if (i < 0 && j == 0) || (j < 0 && i == 0) {
+func (l Rgotoh) LinearSpace(i0 int, j0 int, i int, j int, score int) (p string, q string, r string) {
+	if (i < i0 && j == j0) || (j < j0 && i == i0) {
 		return
-	} else if i < 0 {
-		for jt := 0; jt <= j; jt++ {
+	} else if i < i0 {
+		for jt := j0; jt <= j; jt++ {
 			p += "-"
 			q += " "
 			r += fmt.Sprintf("%c", l.y[jt])
 		}
 		return
-	} else if j < 0 {
-		for it := 0; it <= i; it++ {
+	} else if j < i0 {
+		for it := j0; it <= i; it++ {
 			p += fmt.Sprintf("%c", l.x[it])
 			q += " "
 			r += "-"
@@ -127,12 +121,13 @@ func (l Rgotoh) LinearSpace(i int, j int, score int) (p string, q string, r stri
 		if err1 >= 1 && err2 >= 1 {
 			tmp += d
 		}
+		fmt.Println(tmp1, tmp2, err1, err2, tmp, jh)
 		if tmp == score {
 			maxj = jh
 		}
 	}
-	//fmt.Println(i, j, maxj, "result")
-	p, q, r = l.LinearSpace(i-1, maxj-1, score)
+	fmt.Println(i, j, maxj, "result")
+	p, q, r = l.LinearSpace(i0, j0, i-1, maxj-1, score)
 	if maxj == j+1 {
 		//When no suitable solution is not found for i.
 		p += fmt.Sprintf("%c", l.x[i])

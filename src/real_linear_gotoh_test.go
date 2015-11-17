@@ -10,24 +10,25 @@ func TestDescribe7(t *testing.T) {
 	Describe(t, "We have the other strings", func() {
 		arr := [][]int{{1, -1, -1, -1}, {-1, 1, -1, -1}, {-1, -1, 1, -1}, {-1, -1, -1, 1}}
 		charlist := "acgt"
-		var settings = NewConstants(2, 1, arr, charlist)
-		var lcs = NewRGotoh("ggatgcatgcatgc", "atgcatgcatgccc", *settings)
+		var settings = NewConstants(7, 1, arr, charlist)
+		var lcs = NewRGotoh("ggatgcatgca", "atgcatgcatg", *settings)
 		Context("and we calculate by RealLGotoh-algo", func() {
 			lcs.Length()
 			var lx, ly = lcs.Strlen()
 			var p, q, r = lcs.Print(lx, ly)
 			It("should be the correct string of 1st line", func() {
-				Expect(p).To(Equal, "--atgcatgcatgccc")
+				Expect(p).To(Equal, "--atgcatgcatg")
 			})
 			It("should be the correct string of 2nd line", func() {
-				Expect(q).To(Equal, "  |||||||||||  |")
+				Expect(q).To(Equal, "  |||||||||  ")
 			})
 			It("should be the correct string of 3rd line", func() {
-				Expect(r).To(Equal, "ggatgcatgcatg--c")
+				Expect(r).To(Equal, "ggatgcatgca--")
 			})
 			It("should be the correct score", func() {
+				lcs.Length()
 				var s = lcs.Score()
-				Expect(s).To(Equal, 6)
+				Expect(s).To(Equal, -7)
 			})
 		})
 	})
