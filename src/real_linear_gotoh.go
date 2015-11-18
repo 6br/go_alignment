@@ -124,7 +124,7 @@ func (l Rgotoh) LinearSpace(i0 int, j0 int, i int, j int, score int) (p string, 
 	}
 	maxj := j + 1 //To use determine whethere i have a suitable solution.
 	min := 0
-	if l.vague {
+	if l.vague && j-70 >= 0 {
 		min = j - 70
 	}
 	for jh := j; jh >= min; jh-- {
