@@ -95,11 +95,8 @@ func (l Rgotoh) ScoreArgs(x int) (e int, k int) {
 
 func (l Rgotoh) Print(i int, j int) (string, string, string) {
 	//fmt.Println(l.LinearSpaceAlign(120, 120, 120, 120))
-	//fmt.Println(l.RegionAlign(7, len(l.x), 0, len(l.y), false))
-	//fmt.Println(l.RegionAlign(7, len(l.x), 0, len(l.y), true))
-	//fmt.Println(l.RegionAlign(0, 7, 0, 0, false))
 	//fmt.Println(l.RegionAlign(0, 7, 0, 0, true))
-	if len(l.x) > 100 {
+	if len(l.x) > 200 {
 		l.vague = true
 	}
 	return l.LinearSpace(0, 0, i-1, j-1, l.Score())
