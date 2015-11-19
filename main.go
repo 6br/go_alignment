@@ -147,6 +147,7 @@ func main() {
 		ary2 = flag.Arg(2)
 	}
 	if debug {
+		fmt.Println("Waiting...")
 		fmt.Scanln()
 	}
 	var lcs DPMatrix
@@ -161,21 +162,26 @@ func main() {
 		lcs = NewMEA(ary, ary2, settings)
 	case "5":
 		lcs = NewLGotoh(ary, ary2, settings)
+	case "6":
+		lcs = NewRGotoh(ary, ary2, settings)
 	default:
 		lcs = NewNW(ary, ary2)
 	}
 
 	lcs.Length() // Exec alignment
+	score := lcs.Score()
 	var lx, ly = lcs.Strlen()
 	if debug {
+		fmt.Println("Waiting...")
 		fmt.Scanln()
 	}
 	var p, q, r = lcs.Print(lx, ly)
 	if debug {
+		fmt.Println("Waiting...")
 		fmt.Scanln()
 	}
 	j := 0
-	fmt.Println("Score:", lcs.Score())
+	fmt.Println("Score:", score)
 	if interval >= 1 && interval < len(p) {
 		for i := interval - 1; i < len(p)+interval; i += interval {
 			if i > len(p) {
