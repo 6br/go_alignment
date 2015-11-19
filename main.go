@@ -147,6 +147,7 @@ func main() {
 		ary2 = flag.Arg(2)
 	}
 	if debug {
+		fmt.Println("Waiting...")
 		fmt.Scanln()
 	}
 	var lcs DPMatrix
@@ -171,10 +172,12 @@ func main() {
 	score := lcs.Score()
 	var lx, ly = lcs.Strlen()
 	if debug {
+		fmt.Println("Waiting...")
 		fmt.Scanln()
 	}
 	var p, q, r = lcs.Print(lx, ly)
 	if debug {
+		fmt.Println("Waiting...")
 		fmt.Scanln()
 	}
 	j := 0
