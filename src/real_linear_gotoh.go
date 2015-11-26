@@ -45,7 +45,7 @@ func (l *Rgotoh) Length() {
 	l.RegionAlign(0, len(l.x), 0, len(l.y), true)
 }
 
-func (l *Rgotoh) RegionAlign(i1 int, i2 int, j1 int, j2 int, order bool) (result int, class int) {
+func (l *Rgotoh) RegionAlign(i1 int, i2 int, j1 int, j2 int, order bool) (int, int, int) {
 	var m = i2 - i1
 	var n = j2 - j1
 	l.h[0][0][0] = 0
@@ -85,7 +85,7 @@ func (l *Rgotoh) RegionAlign(i1 int, i2 int, j1 int, j2 int, order bool) (result
 			l.h[2][i][0] = l.h[2][i][1]
 		}
 	}
-	return l.ScoreArgs(m)
+	return l.h[0][m][0], l.h[1][m][0], l.h[2][m][0] //l.ScoreArgs(m)
 }
 
 func (l Rgotoh) ScoreArgs(x int) (e int, k int) {
@@ -102,6 +102,29 @@ func (l Rgotoh) Print(i int, j int) (string, string, string) {
 	return l.LinearSpace(0, 0, i-1, j-1, l.Score())
 	//return l.LinearBinaryAlign(0, i-1, 0, j-1, l.Score())
 	//return l.linearSpaceAlign(0, len(l.x), 0, len(l.y))
+}
+
+func (l Rgotoh) pointMaxScore(i1 int, j1 int, i2 int, j2 int, ih int, jh int) int {
+	tmp11, tmp12, tmp13 := l.RegionAlign(i1, ih, j1, jh, true)
+	tmp21, tmp22, tmp23 := l.RegionAlign(ih, i2, jh, j2, false)
+	_, d := l.Geted()
+	array := make([]int, 8)
+	array[0] = tmp11 + tmp21
+	array[1] = tmp11 + tmp22
+	array[2] = tmp11 + tmp23
+	array[3] = tmp12 + tmp21
+	array[4] = tmp12 + tmp22 + d
+	array[5] = tmp12 + tmp23
+	array[6] = tmp13 + tmp21
+	array[7] = tmp13 + tmp23 + d
+
+	tmp := math.MinInt64
+	for _, v := range array {
+		if tmp < v {
+			tmp = v
+		}
+	}
+	return tmp
 }
 
 func (l Rgotoh) LinearSpace(i0 int, j0 int, i int, j int, score int) (p string, q string, r string) {
@@ -128,13 +151,7 @@ func (l Rgotoh) LinearSpace(i0 int, j0 int, i int, j int, score int) (p string, 
 		min = j - 70
 	}
 	for jh := j; jh >= min; jh-- {
-		tmp1, err1 := l.RegionAlign(0, i, 0, jh, true)
-		tmp2, err2 := l.RegionAlign(i, len(l.x), jh, len(l.y), false)
-		tmp := tmp1 + tmp2
-		_, d := l.Geted()
-		if err1 == err2 && err2 >= 1 {
-			tmp += d
-		}
+		tmp := l.pointMaxScore(0, 0, len(l.x), len(l.y), i, jh)
 		//fmt.Println(tmp1, tmp2, err1, err2, tmp, jh)
 		if tmp == score {
 			maxj = jh
@@ -169,23 +186,14 @@ func (l Rgotoh) LinearSpace(i0 int, j0 int, i int, j int, score int) (p string, 
 
 func (l Rgotoh) LinearBinaryAlign(i1 int, i2 int, j1 int, j2 int, score int) (p string, q string, r string) {
 	if i2-i1 <= 100 || j2-j1 <= 100 {
-		//fmt.Println(i1, j1, i2, j2, "delegate")
 		return l.LinearSpace(i1, j1, i2, j2, score)
 	}
 	ih := ((i1 + i2) / 2)
-	if ih >= len(l.x) || ih < i1 {
-		panic(i1 + i2)
-	}
+
 	maxscore, maxj := -1000, j1+1
 	for jh := j2; jh >= j1; jh-- {
-		tmp1, err1 := l.RegionAlign(i1, ih, j1, jh, true)
-		tmp2, err2 := l.RegionAlign(ih, i2, jh, j2, false)
-		//fmt.Println(tmp1, tmp2)
-		tmp := tmp1 + tmp2
-		_, d := l.Geted()
-		if err1 >= 1 && err2 >= 1 {
-			tmp += d
-		}
+		tmp := l.pointMaxScore(i1, j1, i2, j2, ih, jh)
+
 		//fmt.Println(i1, i2, j1, j2, ih, jh, tmp)
 		if tmp > maxscore {
 			maxscore = tmp
